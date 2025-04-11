@@ -27,7 +27,7 @@ export default function Home() {
           </Link>
           {isAuthenticated ? (
             <Button asChild size="sm">
-              <Link href={user?.role === "teacher" ? "/teacher/dashboard" : "/student/dashboard"}>Go to Dashboard</Link>
+              <Link href={user?.role === "teacher" ? "/teacher/dashboard" : "/student/ai-assistant"}>Go to Dashboard</Link>
             </Button>
           ) : (
             <Button asChild size="sm">
@@ -53,7 +53,7 @@ export default function Home() {
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
                   {isAuthenticated ? (
                     <Button asChild size="lg">
-                      <Link href={user?.role === "teacher" ? "/teacher/dashboard" : "/student/dashboard"}>
+                      <Link href={user?.role === "teacher" ? "/teacher/dashboard" : "/student/ai-assistant"}>
                         Continue to Dashboard <ArrowRight className="ml-2 h-4 w-4" />
                       </Link>
                     </Button>

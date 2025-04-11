@@ -17,7 +17,7 @@ export default function StudentInsights() {
       progress: 85,
       courses: ["Physics", "Mathematics"],
       lastActive: "Today",
-      status: "Active",
+      status: "Regular User",
     },
     {
       id: 2,
@@ -27,7 +27,7 @@ export default function StudentInsights() {
       progress: 72,
       courses: ["Physics", "Chemistry"],
       lastActive: "Yesterday",
-      status: "Active",
+      status: "Super User",
     },
     {
       id: 3,
@@ -37,7 +37,7 @@ export default function StudentInsights() {
       progress: 93,
       courses: ["Mathematics", "Chemistry"],
       lastActive: "2 days ago",
-      status: "Active",
+      status: "Super User",
     },
     {
       id: 4,
@@ -47,7 +47,7 @@ export default function StudentInsights() {
       progress: 65,
       courses: ["Physics"],
       lastActive: "3 days ago",
-      status: "At Risk",
+      status: "Occasional User",
     },
     {
       id: 5,
@@ -57,7 +57,7 @@ export default function StudentInsights() {
       progress: 45,
       courses: ["Mathematics"],
       lastActive: "1 week ago",
-      status: "At Risk",
+      status: "Occasional User",
     },
   ]
 
@@ -151,12 +151,12 @@ export default function StudentInsights() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">At-Risk Students</CardTitle>
-            <AlertTriangle className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">Occasional Users</CardTitle>
+            <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">12</div>
-            <p className="text-xs text-muted-foreground">-3 from last week</p>
+            <p className="text-xs text-muted-foreground">3 fewer than last week</p>
           </CardContent>
         </Card>
       </div>
@@ -164,8 +164,6 @@ export default function StudentInsights() {
       <Tabs defaultValue="students" className="mt-6">
         <TabsList>
           <TabsTrigger value="students">Individual Students</TabsTrigger>
-          <TabsTrigger value="class">Class Analytics</TabsTrigger>
-          <TabsTrigger value="topics">Challenging Topics</TabsTrigger>
           <TabsTrigger value="recommendations">AI Recommendations</TabsTrigger>
         </TabsList>
 
@@ -177,20 +175,27 @@ export default function StudentInsights() {
             </CardHeader>
             <CardContent>
               <div className="space-y-6">
+                <div className="grid grid-cols-3 text-sm font-medium text-muted-foreground mb-2 px-2">
+                  <div>Student</div>
+                  <div className="text-center">Engagement</div>
+                  <div className="text-right">Usage Level</div>
+                </div>
                 {students.map((student) => (
-                  <div
-                    key={student.id}
-                    className="flex items-center justify-between border-b pb-4 last:border-0 last:pb-0"
-                  >
-                    <div className="flex items-center gap-4">
-                      <Avatar>
-                        <AvatarImage src={student.avatar} alt={student.name} />
-                        <AvatarFallback>{student.name.charAt(0)}</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <h4 className="font-medium">{student.name}</h4>
-                        <p className="text-sm text-muted-foreground">{student.email}</p>
-                        <div className="flex gap-2 mt-1">
+                  <div key={student.id} className="border-b pb-6 last:border-0 last:pb-0 pt-6 first:pt-0">
+                    <div className="grid grid-cols-3 items-center">
+                      {/* Student Information Column */}
+                      <div className="flex flex-col space-y-3">
+                        <div className="flex items-center gap-3">
+                          <Avatar>
+                            <AvatarImage src={student.avatar} alt={student.name} />
+                            <AvatarFallback>{student.name.charAt(0)}</AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <h4 className="font-medium">{student.name}</h4>
+                            <p className="text-sm text-muted-foreground">{student.email}</p>
+                          </div>
+                        </div>
+                        <div className="flex flex-wrap gap-2 ml-11">
                           {student.courses.map((course, index) => (
                             <Badge key={index} variant="outline">
                               {course}
@@ -198,70 +203,24 @@ export default function StudentInsights() {
                           ))}
                         </div>
                       </div>
-                    </div>
-                    <div className="flex flex-col items-end gap-2">
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-medium">{student.progress}%</span>
-                        <Badge variant={student.status === "At Risk" ? "destructive" : "default"}>
+                      
+                      {/* Progress Column */}
+                      <div className="text-center">
+                        <span className="text-xl font-medium">{student.progress}%</span>
+                      </div>
+                      
+                      {/* Engagement Column */}
+                      <div className="text-right">
+                        <Badge 
+                          variant="outline" 
+                          className={`${student.status === "Super User" ? "bg-green-100 text-green-800 hover:bg-green-100 dark:bg-green-800/20 dark:text-green-400 border-green-400" : 
+                                     student.status === "Regular User" ? "bg-blue-100 text-blue-800 hover:bg-blue-100 dark:bg-blue-800/20 dark:text-blue-400 border-blue-400" : 
+                                     "bg-gray-100 text-gray-800 hover:bg-gray-100 dark:bg-gray-800/20 dark:text-gray-400 border-gray-400"}`}
+                        >
                           {student.status}
                         </Badge>
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="class" className="mt-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Class Performance Overview</CardTitle>
-              <CardDescription>Aggregate data and trends across all students</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid gap-4 md:grid-cols-2">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Average Score</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-3xl font-bold">78%</div>
-                    <p className="text-sm text-muted-foreground">Overall class average</p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Completion Rate</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-3xl font-bold">92%</div>
-                    <p className="text-sm text-muted-foreground">Students completing all assignments</p>
-                  </CardContent>
-                </Card>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="topics" className="mt-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Challenging Topics</CardTitle>
-              <CardDescription>Areas where students are struggling the most</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {challengingTopics.map((topic) => (
-                  <div key={topic.id} className="border rounded-md p-4">
-                    <h4 className="font-medium">{topic.topic}</h4>
-                    <p className="text-sm text-muted-foreground">{topic.course}</p>
-                    <div className="mt-2 flex items-center gap-2">
-                      <PieChart className="h-4 w-4" />
-                      <span>Struggle Rate: {topic.struggleRate}%</span>
-                    </div>
-                    <p className="text-sm text-muted-foreground">Affected Students: {topic.affectedStudents}</p>
                   </div>
                 ))}
               </div>

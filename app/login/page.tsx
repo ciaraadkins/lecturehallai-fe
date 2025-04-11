@@ -31,10 +31,10 @@ export default function LoginPage() {
   useEffect(() => {
     // Add a small delay to ensure localStorage and cookies are in sync
     const timer = setTimeout(() => {
-      // If already logged in and not switching, redirect to appropriate dashboard
+      // If already logged in and not switching, redirect to appropriate landing page
       if (user && !isSwitching) {
         if (user.role === "student") {
-          router.push("/student/dashboard")
+          router.push("/student/ai-assistant")
         } else {
           router.push("/teacher/dashboard")
         }
@@ -69,7 +69,7 @@ export default function LoginPage() {
         // Add a small delay before redirect to ensure cookie is set
         setTimeout(() => {
           if (role === "student") {
-            router.push("/student/dashboard")
+            router.push("/student/ai-assistant")
           } else {
             router.push("/teacher/dashboard")
           }

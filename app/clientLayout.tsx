@@ -8,6 +8,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { AppSidebar } from "@/components/app-sidebar"
 import { AuthProvider } from "@/contexts/auth-context"
 import { usePathname } from "next/navigation"
+import { useState, useEffect } from "react"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -18,18 +19,25 @@ export default function ClientLayout({
 }>) {
   const pathname = usePathname()
   const isLoginPage = pathname === "/login"
+  const isHomePage = pathname === "/"
+  const [mounted, setMounted] = useState(false)
+
+  // Handle hydration mismatch by mounting after initial render
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={inter.className} suppressHydrationWarning>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           <AuthProvider>
-            {isLoginPage ? (
+            {isLoginPage || isHomePage ? (
               <div className="flex-1">{children}</div>
             ) : (
               <div className="flex h-screen">
                 <div className="w-64 border-r shrink-0">
-                  <AppSidebar />
+                  {mounted && <AppSidebar />}
                 </div>
                 <div className="flex-1 overflow-auto">{children}</div>
               </div>

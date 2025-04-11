@@ -7,6 +7,15 @@ export function middleware(request: NextRequest) {
   // Define protected paths that require authentication
   const isProtectedPath = path.startsWith("/student") || path.startsWith("/teacher")
 
+  // Specific redirects for index paths
+  if (path === "/student") {
+    return NextResponse.redirect(new URL("/student/ai-assistant", request.url))
+  }
+  
+  if (path === "/teacher") {
+    return NextResponse.redirect(new URL("/teacher/dashboard", request.url))
+  }
+
   // Define public paths that don't require authentication
   const isPublicPath =
     path === "/" ||

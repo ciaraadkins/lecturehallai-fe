@@ -180,28 +180,16 @@ export function AppSidebar() {
             <h3 className="mb-2 px-2 text-sm font-medium text-muted-foreground">Learning</h3>
             <div className="space-y-1">
               <Link
-                href="/student/dashboard"
+                href="/student/ai-assistant"
                 className={cn(
                   "flex items-center px-2 py-1.5 text-sm rounded-md",
-                  pathname === "/student/dashboard"
+                  pathname === "/student/ai-assistant"
                     ? "bg-accent text-accent-foreground font-medium"
                     : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
                 )}
               >
-                <BarChart className="mr-2 h-4 w-4" />
-                Dashboard
-              </Link>
-              <Link
-                href="/student/courses"
-                className={cn(
-                  "flex items-center px-2 py-1.5 text-sm rounded-md",
-                  pathname === "/student/courses" || pathname.startsWith("/student/courses/")
-                    ? "bg-accent text-accent-foreground font-medium"
-                    : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
-                )}
-              >
-                <BookOpen className="mr-2 h-4 w-4" />
-                Course View
+                <MessageSquare className="mr-2 h-4 w-4" />
+                AI Study Assistant
               </Link>
               <Link
                 href="/student/content-hub"
@@ -216,16 +204,28 @@ export function AppSidebar() {
                 Content Hub
               </Link>
               <Link
-                href="/student/ai-assistant"
+                href="/student/courses"
                 className={cn(
                   "flex items-center px-2 py-1.5 text-sm rounded-md",
-                  pathname === "/student/ai-assistant"
+                  pathname === "/student/courses" || pathname.startsWith("/student/courses/")
                     ? "bg-accent text-accent-foreground font-medium"
                     : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
                 )}
               >
-                <MessageSquare className="mr-2 h-4 w-4" />
-                AI Study Assistant
+                <BookOpen className="mr-2 h-4 w-4" />
+                Course View
+              </Link>
+              <Link
+                href="/student/dashboard"
+                className={cn(
+                  "flex items-center px-2 py-1.5 text-sm rounded-md",
+                  pathname === "/student/dashboard"
+                    ? "bg-accent text-accent-foreground font-medium"
+                    : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
+                )}
+              >
+                <BarChart className="mr-2 h-4 w-4" />
+                Dashboard
               </Link>
             </div>
           </div>

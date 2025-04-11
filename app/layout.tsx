@@ -1,11 +1,12 @@
 import type React from "react"
 import ClientLayout from "./clientLayout"
 import type { Metadata } from "next"
+import './globals.css'
 
 export const metadata: Metadata = {
   title: "LectureHall.ai",
   description: "AI-enhanced learning platform",
-    generator: 'v0.dev'
+  generator: 'v0.dev'
 }
 
 export default function RootLayout({
@@ -15,6 +16,3 @@ export default function RootLayout({
 }>) {
   return <ClientLayout>{children}</ClientLayout>
 }
-
-
-import './globals.css'

@@ -19,6 +19,7 @@ export default function AIAssistant() {
     },
   ])
   const [inputValue, setInputValue] = useState("")
+  const [selectedCourse, setSelectedCourse] = useState("physics")
 
   const handleSendMessage = () => {
     if (!inputValue.trim()) return
@@ -41,6 +42,52 @@ export default function AIAssistant() {
     setInputValue("")
   }
 
+  // Mock conversation history data with course information
+  const conversationHistory = [
+    {
+      id: 1,
+      title: "Physics Concepts",
+      course: "physics",
+      lastActive: "2 days ago",
+    },
+    {
+      id: 2,
+      title: "Wave Properties Discussion",
+      course: "physics",
+      lastActive: "3 days ago",
+    },
+    {
+      id: 3,
+      title: "Math Problem Help",
+      course: "math",
+      lastActive: "5 days ago",
+    },
+    {
+      id: 4,
+      title: "Calculus Fundamentals",
+      course: "math",
+      lastActive: "1 week ago",
+    },
+    {
+      id: 5,
+      title: "Chemistry Review",
+      course: "chemistry",
+      lastActive: "1 week ago",
+    },
+    {
+      id: 6,
+      title: "Organic Chemistry Help",
+      course: "chemistry",
+      lastActive: "2 weeks ago",
+    },
+  ]
+
+  // Filter conversations based on the selected course or show all
+  const filteredConversations = selectedCourse === "all" 
+    ? conversationHistory 
+    : conversationHistory.filter(conv => conv.course === selectedCourse)
+    
+  // Define content types for the content generation panel
   const contentTypes = [
     {
       id: "study-guide",
@@ -92,11 +139,11 @@ export default function AIAssistant() {
                     <CardDescription className="text-xs">Powered by advanced AI</CardDescription>
                   </div>
                 </div>
-                <Select defaultValue="physics">
-                  <SelectTrigger className="w-[180px]">
+                <Select defaultValue={selectedCourse} onValueChange={setSelectedCourse}>
+                  <SelectTrigger className="w-[250px] md:w-[300px]">
                     <SelectValue placeholder="Select course context" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="w-[250px] md:w-[300px]">
                     <SelectItem value="physics">Introduction to Physics</SelectItem>
                     <SelectItem value="math">Advanced Mathematics</SelectItem>
                     <SelectItem value="chemistry">Chemistry 101</SelectItem>
@@ -185,37 +232,28 @@ export default function AIAssistant() {
               <CardDescription>Continue where you left off</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <MessageSquare className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm font-medium">Physics Concepts</span>
-                  </div>
-                  <Badge variant="outline" className="text-xs">
-                    2 days ago
-                  </Badge>
+              {filteredConversations.length > 0 ? (
+                <div className="space-y-2">
+                  {filteredConversations.map((conversation) => (
+                    <div key={conversation.id}>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <MessageSquare className="h-4 w-4 text-muted-foreground" />
+                          <span className="text-sm font-medium">{conversation.title}</span>
+                        </div>
+                        <Badge variant="outline" className="text-xs">
+                          {conversation.lastActive}
+                        </Badge>
+                      </div>
+                      {conversation.id !== filteredConversations[filteredConversations.length - 1].id && <Separator className="my-2" />}
+                    </div>
+                  ))}
                 </div>
-                <Separator />
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <MessageSquare className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm font-medium">Math Problem Help</span>
-                  </div>
-                  <Badge variant="outline" className="text-xs">
-                    5 days ago
-                  </Badge>
+              ) : (
+                <div className="text-center text-sm text-muted-foreground py-4">
+                  No recent conversations for this course.
                 </div>
-                <Separator />
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <MessageSquare className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm font-medium">Chemistry Review</span>
-                  </div>
-                  <Badge variant="outline" className="text-xs">
-                    1 week ago
-                  </Badge>
-                </div>
-              </div>
+              )}
             </CardContent>
           </Card>
         </div>

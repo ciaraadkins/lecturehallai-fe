@@ -47,24 +47,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // Check for existing session on mount
   useEffect(() => {
     const checkAuth = () => {
-      const storedUser = localStorage.getItem("user")
+      try {
+        const storedUser = localStorage.getItem("user")
 
-      // Check if auth cookie exists
-      const hasCookie = document.cookie.split(";").some((item) => item.trim().startsWith("auth-token="))
+        // Check if auth cookie exists
+        const hasCookie = document.cookie.split(";").some((item) => item.trim().startsWith("auth-token="))
 
-      if (storedUser && hasCookie) {
-        setUser(JSON.parse(storedUser))
-      } else if (storedUser && !hasCookie) {
-        // If localStorage has user but cookie is missing, set the cookie
-        const userData = JSON.parse(storedUser)
-        const authToken = `${userData.id}:${userData.role}`
-        document.cookie = `auth-token=${authToken}; path=/; max-age=${60 * 60 * 24 * 7}`
+        if (storedUser && hasCookie) {
+          setUser(JSON.parse(storedUser))
+        } else if (storedUser && !hasCookie) {
+          // If localStorage has user but cookie is missing, set the cookie
+          const userData = JSON.parse(storedUser)
+          const authToken = `${userData.id}:${userData.role}`
+          document.cookie = `auth-token=${authToken}; path=/; max-age=${60 * 60 * 24 * 7}`
+        }
+      } catch (error) {
+        // Handle any localStorage errors during SSR
+        console.warn("Auth check failed, possibly during SSR", error)
+      } finally {
+        setIsLoading(false)
       }
-      setIsLoading(false)
     }
 
-    // Small delay to ensure consistent state
-    const timer = setTimeout(checkAuth, 50)
+    // Small delay to ensure consistent state and browser environment
+    const timer = setTimeout(checkAuth, 100)
     return () => clearTimeout(timer)
   }, [])
 
