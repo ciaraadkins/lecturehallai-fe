@@ -12,6 +12,28 @@ body {
   }
 }
 
+@layer components {
+  /* Chat Container Styles */
+  @media (max-width: 768px) {
+    .chat-container {
+      height: calc(100vh - 8rem) !important;
+    }
+    
+    .chat-scroll-area {
+      height: 100% !important;
+    }
+  }
+  
+  /* Flashcard Styles */
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+  
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

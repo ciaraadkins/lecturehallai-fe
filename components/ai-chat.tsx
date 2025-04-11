@@ -51,8 +51,8 @@ export function AIChat({
   }
 
   return (
-    <div className="flex flex-col h-full">
-      <ScrollArea className="flex-1 p-4">
+    <div className="flex flex-col h-full overflow-hidden">
+      <ScrollArea className="flex-1 p-4 h-full">
         {messages.map((message, index) => (
           <div key={index} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"} mb-4`}>
             <div className={`flex items-start gap-3 max-w-[80%] ${message.role === "user" ? "flex-row-reverse" : ""}`}>
@@ -78,11 +78,11 @@ export function AIChat({
           </div>
         ))}
       </ScrollArea>
-      <div className="p-4 border-t">
+      <div className="p-4 border-t flex-shrink-0">
         <div className="flex w-full items-center space-x-2">
           <Textarea
             placeholder={placeholder}
-            className="flex-1 min-h-[60px]"
+            className="flex-1 min-h-[60px] resize-none"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={(e) => {

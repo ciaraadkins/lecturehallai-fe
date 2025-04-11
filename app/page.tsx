@@ -27,7 +27,7 @@ export default function Home() {
           </Link>
           {isAuthenticated ? (
             <Button asChild size="sm">
-              <Link href={user?.role === "teacher" ? "/teacher/dashboard" : "/student/ai-assistant"}>Go to Dashboard</Link>
+              <Link href={user?.role === "teacher" ? "/teacher/dashboard" : "/student/ai-assistant"}>Go to AI Assistant</Link>
             </Button>
           ) : (
             <Button asChild size="sm">
@@ -54,7 +54,7 @@ export default function Home() {
                   {isAuthenticated ? (
                     <Button asChild size="lg">
                       <Link href={user?.role === "teacher" ? "/teacher/dashboard" : "/student/ai-assistant"}>
-                        Continue to Dashboard <ArrowRight className="ml-2 h-4 w-4" />
+                        Continue to AI Assistant <ArrowRight className="ml-2 h-4 w-4" />
                       </Link>
                     </Button>
                   ) : (
