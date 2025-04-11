@@ -23,6 +23,7 @@ import { TypingIndicator } from "@/components/typing-indicator"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { useConversations, Message } from "@/hooks/use-conversations"
 import { RightSidebar } from "@/components/right-sidebar"
+import { AILogo } from "@/components/ai-logo"
 
 export default function AIAssistant() {
   const [inputValue, setInputValue] = useState("")
@@ -428,26 +429,26 @@ export default function AIAssistant() {
   return (
     <div className="flex h-screen w-full overflow-hidden">
       <div 
-        className="flex-1 flex flex-col transition-all duration-300 px-6 py-6"
+        className="flex-1 flex flex-col transition-all duration-300 px-6 py-6 relative"
         style={{ paddingRight: isRightSidebarCollapsed ? '3rem' : 'calc(420px + 1.5rem)' }}
       >
+        <div className="absolute top-0 left-0 right-0 h-64 pointer-events-none z-0 opacity-50">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/5"></div>
+        </div>
         <div className="flex flex-col mb-6 gap-4">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">AI Study Assistant</h1>
+            <h1 className="text-3xl font-bold tracking-tight"><span className="gradient-text">AI Study Assistant</span></h1>
             <p className="text-muted-foreground">Get personalized help and generate study materials</p>
           </div>
         </div>
 
-        <Card className="flex-1 flex flex-col overflow-hidden chat-container">
+        <Card className="flex-1 flex flex-col overflow-hidden chat-container card-gradient">
           <CardHeader className="px-4 py-3 border-b flex-shrink-0">
             <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <Avatar className="h-8 w-8">
-                  <AvatarImage src="/abstract-ai-network.png" alt="AI" />
-                  <AvatarFallback>AI</AvatarFallback>
-                </Avatar>
+              <div className="flex items-center space-x-3">
+                <AILogo size="md" />
                 <div>
-                  <CardTitle className="text-lg">LectureHall AI</CardTitle>
+                  <CardTitle className="text-lg gradient-text">LectureHall AI</CardTitle>
                   <CardDescription className="text-xs">Powered by advanced AI</CardDescription>
                 </div>
               </div>

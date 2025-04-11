@@ -252,17 +252,23 @@ export function RightSidebar({ courseFilter, onContentSelectionChange, onCollaps
         "h-full overflow-hidden flex flex-col",
         isCollapsed ? "opacity-0 invisible" : "opacity-100 visible"
       )}>
-        <div className="flex-1 overflow-auto p-4 space-y-4">
+        <div className="flex flex-col h-full">
+          <div className="p-4 border-b bg-gradient-to-r from-secondary/5 to-primary/5">
+            <h2 className="text-xl font-semibold gradient-text">Learning Resources</h2>
+            <p className="text-sm text-muted-foreground">Study materials and course content</p>
+          </div>
+          
+          <div className="flex-1 overflow-auto p-4 space-y-6">
 
           {/* Recent Generations Section */}
           <Collapsible
             open={isRecentGenerationsOpen}
             onOpenChange={setIsRecentGenerationsOpen}
-            className="border rounded-md"
+            className="border rounded-md shadow-sm overflow-hidden"
           >
             <CollapsibleTrigger asChild>
-              <div className="flex items-center justify-between p-3 cursor-pointer hover:bg-secondary">
-                <h3 className="font-medium">Recent Generations</h3>
+              <div className="flex items-center justify-between p-3 cursor-pointer hover:bg-accent/10 bg-card">
+                <h3 className="font-medium text-primary">Recent Generations</h3>
                 {isRecentGenerationsOpen ? (
                   <ChevronUp className="h-4 w-4" />
                 ) : (
@@ -311,11 +317,11 @@ export function RightSidebar({ courseFilter, onContentSelectionChange, onCollaps
           <Collapsible
             open={isCourseContentOpen}
             onOpenChange={setIsCourseContentOpen}
-            className="border rounded-md"
+            className="border rounded-md shadow-sm overflow-hidden"
           >
             <CollapsibleTrigger asChild>
-              <div className="flex items-center justify-between p-3 cursor-pointer hover:bg-secondary">
-                <h3 className="font-medium">Course Content</h3>
+              <div className="flex items-center justify-between p-3 cursor-pointer hover:bg-accent/10 bg-card">
+                <h3 className="font-medium text-primary">Course Content</h3>
                 {isCourseContentOpen ? (
                   <ChevronUp className="h-4 w-4" />
                 ) : (
@@ -403,6 +409,7 @@ export function RightSidebar({ courseFilter, onContentSelectionChange, onCollaps
               </div>
             </CollapsibleContent>
           </Collapsible>
+          </div>
         </div>
       </div>
     </div>

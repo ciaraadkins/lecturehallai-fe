@@ -34,13 +34,14 @@ export function CourseCard({
   image,
 }: CourseCardProps) {
   return (
-    <Card className="overflow-hidden">
-      <div className="aspect-video w-full overflow-hidden">
+    <Card className="overflow-hidden card-gradient">
+      <div className="aspect-video w-full overflow-hidden relative">
         <img src={image || "/placeholder.svg"} alt={title} className="object-cover w-full h-full" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-40"></div>
       </div>
       <CardHeader className="pb-2">
         <div className="flex justify-between items-start">
-          <CardTitle className="text-xl">{title}</CardTitle>
+          <CardTitle className="text-xl gradient-text">{title}</CardTitle>
           <Badge variant={progress > 50 ? "default" : "outline"}>{progress}% Complete</Badge>
         </div>
         <CardDescription>{description}</CardDescription>
@@ -74,7 +75,7 @@ export function CourseCard({
             <span>{upcomingDate}</span>
           </div>
         </div>
-        <Button size="sm" asChild>
+        <Button size="sm" asChild className="btn-gradient">
           <Link href={`/student/courses/${id}`}>Continue</Link>
         </Button>
       </CardFooter>

@@ -142,11 +142,10 @@ export function AIChat({
       return (
         <div key={`typing-${index}`} className="flex justify-start mb-4">
           <div className="flex items-start gap-3 max-w-[80%]">
-            <Avatar className="h-8 w-8 mt-0.5">
-              <AvatarImage src="/abstract-ai-network.png" alt="AI" />
-              <AvatarFallback>AI</AvatarFallback>
+            <Avatar className="h-9 w-9 mt-0.5 ring-2 ring-primary/20 shadow-sm">
+              <AvatarFallback className="bg-primary text-primary-foreground">AI</AvatarFallback>
             </Avatar>
-            <div className="rounded-lg py-2 px-3 bg-muted">
+            <div className="rounded-lg py-2 px-3 bg-muted relative overflow-hidden" style={{background: 'linear-gradient(135deg, hsl(var(--muted)) 0%, hsl(var(--muted)/0.5) 100%)'}}>
               {renderTypingIndicator()}
             </div>
           </div>
@@ -182,20 +181,14 @@ export function AIChat({
       return (
         <div key={`message-${index}`} className={`flex ${isUserMessage ? "justify-end" : "justify-start"} mb-4`}>
           <div className={`flex items-start gap-3 max-w-[80%] ${isUserMessage ? "flex-row-reverse" : ""}`}>
-            <Avatar className="h-8 w-8 mt-0.5">
+            <Avatar className={`h-9 w-9 mt-0.5 ${isUserMessage ? 'ring-2 ring-accent/20' : 'ring-2 ring-primary/20'} shadow-sm`}>
               {isUserMessage ? (
-                <>
-                  <AvatarImage src="/diverse-students-studying.png" alt="You" />
-                  <AvatarFallback>You</AvatarFallback>
-                </>
+                <AvatarFallback className="bg-accent text-accent-foreground">You</AvatarFallback>
               ) : (
-                <>
-                  <AvatarImage src="/abstract-ai-network.png" alt="AI" />
-                  <AvatarFallback>AI</AvatarFallback>
-                </>
+                <AvatarFallback className="bg-primary text-primary-foreground">AI</AvatarFallback>
               )}
             </Avatar>
-            <div className={`rounded-lg p-3 ${isUserMessage ? "bg-primary text-primary-foreground" : "bg-muted"}`}>
+            <div className={`rounded-lg p-3 ${isUserMessage ? "bg-primary text-primary-foreground gradient-bg" : "bg-muted relative overflow-hidden"}`} style={!isUserMessage ? {background: 'linear-gradient(135deg, hsl(var(--muted)) 0%, hsl(var(--muted)/0.5) 100%)'} : {}}>
               {message.content}
             </div>
           </div>
@@ -221,7 +214,7 @@ export function AIChat({
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyDown}
           />
-          <Button size="icon" onClick={handleSendMessage}>
+          <Button size="icon" onClick={handleSendMessage} className="btn-gradient">
             <Send className="h-4 w-4" />
             <span className="sr-only">Send</span>
           </Button>
@@ -255,7 +248,7 @@ export function AIChat({
             <Button 
               variant="outline" 
               size="sm" 
-              className="rounded-full flex gap-1" 
+              className="rounded-full flex gap-1 border gradient-border hover:border-transparent" 
               onClick={() => onGenerateContent("study-guide")}
             >
               <FileText className="h-4 w-4" />

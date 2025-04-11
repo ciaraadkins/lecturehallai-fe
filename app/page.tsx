@@ -4,6 +4,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { BookOpen, GraduationCap, LayoutDashboard, Library, MessageSquare, ArrowRight } from "lucide-react"
 import { useAuth } from "@/contexts/auth-context"
+import { AILogo } from "@/components/ai-logo"
 
 export default function Home() {
   const { user, isAuthenticated } = useAuth()
@@ -12,8 +13,8 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
       <header className="px-4 lg:px-6 h-14 flex items-center border-b">
         <Link className="flex items-center justify-center" href="/">
-          <GraduationCap className="h-6 w-6 mr-2" />
-          <span className="font-bold">LectureHall.ai</span>
+          <AILogo size="sm" />
+          <span className="font-bold gradient-text ml-2">LectureHall.ai</span>
         </Link>
         <nav className="ml-auto flex gap-4 sm:gap-6">
           <Link className="text-sm font-medium hover:underline underline-offset-4" href="#">
@@ -43,7 +44,7 @@ export default function Home() {
               <div className="flex flex-col justify-center space-y-4">
                 <div className="space-y-2">
                   <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
-                    Personalized Learning with AI
+                    <span className="gradient-text">Personalized Learning</span> with AI
                   </h1>
                   <p className="max-w-[600px] text-gray-500 md:text-xl dark:text-gray-400">
                     LectureHall.ai connects teachers, students, and AI-powered learning tools in a cohesive ecosystem
@@ -52,17 +53,17 @@ export default function Home() {
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
                   {isAuthenticated ? (
-                    <Button asChild size="lg">
-                      <Link href={user?.role === "teacher" ? "/teacher/dashboard" : "/student/ai-assistant"}>
-                        Continue to AI Assistant <ArrowRight className="ml-2 h-4 w-4" />
-                      </Link>
+                    <Button asChild size="lg" className="btn-gradient">
+                    <Link href={user?.role === "teacher" ? "/teacher/dashboard" : "/student/ai-assistant"}>
+                    Continue to AI Assistant <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
                     </Button>
                   ) : (
                     <>
-                      <Button asChild size="lg">
+                      <Button asChild size="lg" className="btn-gradient">
                         <Link href="/login?tab=student">Student Login</Link>
                       </Button>
-                      <Button asChild variant="outline" size="lg">
+                      <Button asChild variant="outline" size="lg" className="gradient-border hover:border-transparent">
                         <Link href="/login?tab=teacher">Teacher Login</Link>
                       </Button>
                     </>
@@ -92,39 +93,39 @@ export default function Home() {
               </div>
             </div>
             <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 py-12 md:grid-cols-2 lg:grid-cols-4">
-              <div className="flex flex-col items-center space-y-2 rounded-lg p-4">
-                <div className="rounded-full bg-gray-100 p-2 dark:bg-gray-800">
+              <div className="flex flex-col items-center space-y-3 rounded-lg p-6 card-gradient shadow-md">
+                <div className="rounded-full gradient-bg p-3 text-white">
                   <LayoutDashboard className="h-6 w-6" />
                 </div>
                 <h3 className="text-xl font-bold">Personalized Dashboards</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
+                <p className="text-sm text-center text-gray-500 dark:text-gray-400">
                   Tailored views for both teachers and students with relevant insights and actions
                 </p>
               </div>
-              <div className="flex flex-col items-center space-y-2 rounded-lg p-4">
-                <div className="rounded-full bg-gray-100 p-2 dark:bg-gray-800">
+              <div className="flex flex-col items-center space-y-3 rounded-lg p-6 card-gradient shadow-md">
+                <div className="rounded-full gradient-bg p-3 text-white" style={{background: 'linear-gradient(135deg, hsl(var(--secondary)) 0%, hsl(var(--primary)) 100%)'}}>
                   <BookOpen className="h-6 w-6" />
                 </div>
                 <h3 className="text-xl font-bold">Course Management</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
+                <p className="text-sm text-center text-gray-500 dark:text-gray-400">
                   Intuitive tools for organizing and accessing course materials and assignments
                 </p>
               </div>
-              <div className="flex flex-col items-center space-y-2 rounded-lg p-4">
-                <div className="rounded-full bg-gray-100 p-2 dark:bg-gray-800">
+              <div className="flex flex-col items-center space-y-3 rounded-lg p-6 card-gradient shadow-md">
+                <div className="rounded-full gradient-bg p-3 text-white" style={{background: 'linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(var(--secondary)) 100%)'}}>
                   <Library className="h-6 w-6" />
                 </div>
                 <h3 className="text-xl font-bold">Content Library</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
+                <p className="text-sm text-center text-gray-500 dark:text-gray-400">
                   Centralized repository for all teaching and learning materials
                 </p>
               </div>
-              <div className="flex flex-col items-center space-y-2 rounded-lg p-4">
-                <div className="rounded-full bg-gray-100 p-2 dark:bg-gray-800">
+              <div className="flex flex-col items-center space-y-3 rounded-lg p-6 card-gradient shadow-md">
+                <div className="rounded-full gradient-bg p-3 text-white" style={{background: 'linear-gradient(135deg, hsl(var(--warning)) 0%, hsl(var(--accent)) 100%)'}}>
                   <MessageSquare className="h-6 w-6" />
                 </div>
                 <h3 className="text-xl font-bold">AI Study Assistant</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
+                <p className="text-sm text-center text-gray-500 dark:text-gray-400">
                   Intelligent AI companion that helps generate study materials and answers questions
                 </p>
               </div>

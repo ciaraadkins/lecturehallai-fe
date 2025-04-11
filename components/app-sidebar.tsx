@@ -14,6 +14,7 @@ import {
   Layers,
   LogOut,
 } from "lucide-react"
+import { AILogo } from "@/components/ai-logo"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -42,13 +43,11 @@ export function AppSidebar() {
 
   if (!mounted) {
     return (
-      <div className="h-full flex flex-col">
-        <div className="p-4 border-b">
+      <div className="h-full flex flex-col bg-[hsl(var(--sidebar-background))]">
+        <div className="p-4 border-b bg-gradient-to-r from-primary/10 to-primary/5">
           <div className="flex items-center gap-2">
-            <div className="rounded-md bg-primary p-1">
-              <BookOpen className="h-6 w-6 text-primary-foreground" />
-            </div>
-            <span className="font-bold text-xl">LectureHall.ai</span>
+            <AILogo size="md" />
+            <span className="font-bold text-xl gradient-text">LectureHall.ai</span>
           </div>
         </div>
         <div className="flex-1"></div>
@@ -59,12 +58,10 @@ export function AppSidebar() {
   // If still loading auth state, show minimal sidebar
   if (isLoading) {
     return (
-      <div className="h-full flex flex-col">
-        <div className="p-4 border-b">
+      <div className="h-full flex flex-col bg-[hsl(var(--sidebar-background))]">
+        <div className="p-4 border-b bg-gradient-to-r from-primary/10 to-primary/5">
           <div className="flex items-center gap-2">
-            <div className="rounded-md bg-primary p-1">
-              <BookOpen className="h-6 w-6 text-primary-foreground" />
-            </div>
+            <AILogo size="md" />
             <span className="font-bold text-xl">LectureHall.ai</span>
           </div>
         </div>
@@ -76,13 +73,11 @@ export function AppSidebar() {
   // If not authenticated, show minimal sidebar
   if (!isAuthenticated) {
     return (
-      <div className="h-full flex flex-col">
-        <div className="p-4 border-b">
+      <div className="h-full flex flex-col bg-[hsl(var(--sidebar-background))]">
+        <div className="p-4 border-b bg-gradient-to-r from-primary/10 to-primary/5">
           <Link href="/" className="flex items-center gap-2">
-            <div className="rounded-md bg-primary p-1">
-              <BookOpen className="h-6 w-6 text-primary-foreground" />
-            </div>
-            <span className="font-bold text-xl">LectureHall.ai</span>
+            <AILogo size="md" />
+            <span className="font-bold text-xl gradient-text">LectureHall.ai</span>
           </Link>
         </div>
         <div className="flex-1 p-4">
@@ -109,13 +104,11 @@ export function AppSidebar() {
   const isStudent = user?.role === "student"
 
   return (
-    <div className="h-full flex flex-col">
-      <div className="p-4 border-b">
+    <div className="h-full flex flex-col bg-[hsl(var(--sidebar-background))]">
+      <div className="p-4 border-b bg-gradient-to-r from-primary/10 to-primary/5">
         <Link href="/" className="flex items-center gap-2">
-          <div className="rounded-md bg-primary p-1">
-            <BookOpen className="h-6 w-6 text-primary-foreground" />
-          </div>
-          <span className="font-bold text-xl">LectureHall.ai</span>
+          <AILogo size="md" />
+          <span className="font-bold text-xl gradient-text">LectureHall.ai</span>
         </Link>
       </div>
 
@@ -129,8 +122,8 @@ export function AppSidebar() {
                 className={cn(
                   "flex items-center px-2 py-1.5 text-sm rounded-md",
                   pathname === "/teacher/dashboard"
-                    ? "bg-accent text-accent-foreground font-medium"
-                    : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
+                    ? "bg-accent text-accent-foreground font-medium relative overflow-hidden after:absolute after:inset-0 after:bg-gradient-to-r after:from-primary/10 after:to-accent/10 after:rounded-md after:z-[-1]"
+                    : "text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground transition-colors",
                 )}
               >
                 <BarChart className="mr-2 h-4 w-4" />
@@ -141,8 +134,8 @@ export function AppSidebar() {
                 className={cn(
                   "flex items-center px-2 py-1.5 text-sm rounded-md",
                   pathname === "/teacher/courses" || pathname.startsWith("/teacher/courses/")
-                    ? "bg-accent text-accent-foreground font-medium"
-                    : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
+                    ? "bg-accent text-accent-foreground font-medium relative overflow-hidden after:absolute after:inset-0 after:bg-gradient-to-r after:from-primary/10 after:to-accent/10 after:rounded-md after:z-[-1]"
+                    : "text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground transition-colors",
                 )}
               >
                 <Layers className="mr-2 h-4 w-4" />
@@ -153,8 +146,8 @@ export function AppSidebar() {
                 className={cn(
                   "flex items-center px-2 py-1.5 text-sm rounded-md",
                   pathname === "/teacher/content"
-                    ? "bg-accent text-accent-foreground font-medium"
-                    : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
+                    ? "bg-accent text-accent-foreground font-medium relative overflow-hidden after:absolute after:inset-0 after:bg-gradient-to-r after:from-primary/10 after:to-accent/10 after:rounded-md after:z-[-1]"
+                    : "text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground transition-colors",
                 )}
               >
                 <Library className="mr-2 h-4 w-4" />
@@ -165,8 +158,8 @@ export function AppSidebar() {
                 className={cn(
                   "flex items-center px-2 py-1.5 text-sm rounded-md",
                   pathname === "/teacher/insights"
-                    ? "bg-accent text-accent-foreground font-medium"
-                    : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
+                    ? "bg-accent text-accent-foreground font-medium relative overflow-hidden after:absolute after:inset-0 after:bg-gradient-to-r after:from-primary/10 after:to-accent/10 after:rounded-md after:z-[-1]"
+                    : "text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground transition-colors",
                 )}
               >
                 <Users className="mr-2 h-4 w-4" />
@@ -185,8 +178,8 @@ export function AppSidebar() {
                 className={cn(
                   "flex items-center px-2 py-1.5 text-sm rounded-md",
                   pathname === "/student/ai-assistant"
-                    ? "bg-accent text-accent-foreground font-medium"
-                    : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
+                    ? "bg-accent text-accent-foreground font-medium relative overflow-hidden after:absolute after:inset-0 after:bg-gradient-to-r after:from-primary/10 after:to-accent/10 after:rounded-md after:z-[-1]"
+                    : "text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground transition-colors",
                 )}
               >
                 <MessageSquare className="mr-2 h-4 w-4" />
@@ -197,8 +190,8 @@ export function AppSidebar() {
                 className={cn(
                   "flex items-center px-2 py-1.5 text-sm rounded-md",
                   pathname === "/student/content-hub"
-                    ? "bg-accent text-accent-foreground font-medium"
-                    : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
+                    ? "bg-accent text-accent-foreground font-medium relative overflow-hidden after:absolute after:inset-0 after:bg-gradient-to-r after:from-primary/10 after:to-accent/10 after:rounded-md after:z-[-1]"
+                    : "text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground transition-colors",
                 )}
               >
                 <FileText className="mr-2 h-4 w-4" />
@@ -209,8 +202,8 @@ export function AppSidebar() {
                 className={cn(
                   "flex items-center px-2 py-1.5 text-sm rounded-md",
                   pathname === "/student/courses" || pathname.startsWith("/student/courses/")
-                    ? "bg-accent text-accent-foreground font-medium"
-                    : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
+                    ? "bg-accent text-accent-foreground font-medium relative overflow-hidden after:absolute after:inset-0 after:bg-gradient-to-r after:from-primary/10 after:to-accent/10 after:rounded-md after:z-[-1]"
+                    : "text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground transition-colors",
                 )}
               >
                 <BookOpen className="mr-2 h-4 w-4" />
@@ -221,8 +214,8 @@ export function AppSidebar() {
                 className={cn(
                   "flex items-center px-2 py-1.5 text-sm rounded-md",
                   pathname === "/student/dashboard"
-                    ? "bg-accent text-accent-foreground font-medium"
-                    : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
+                    ? "bg-accent text-accent-foreground font-medium relative overflow-hidden after:absolute after:inset-0 after:bg-gradient-to-r after:from-primary/10 after:to-accent/10 after:rounded-md after:z-[-1]"
+                    : "text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground transition-colors",
                 )}
               >
                 <BarChart className="mr-2 h-4 w-4" />
@@ -235,8 +228,6 @@ export function AppSidebar() {
         {isStudent && (
           <RecentConversations />
         )}
-
-        {/* Remove Profile & Preferences from sidebar since it's in the dropdown */}
       </div>
 
       <div className="p-4 border-t mt-auto">

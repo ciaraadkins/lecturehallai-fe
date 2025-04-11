@@ -17,11 +17,13 @@ interface ContentItemProps {
 
 export function ContentItem({ id, title, description, type, course, created, icon: Icon }: ContentItemProps) {
   return (
-    <Card>
+    <Card className="card-gradient">
       <CardHeader className="pb-3">
         <div className="flex items-center gap-2">
-          <Icon className="h-5 w-5 text-primary" />
-          <CardTitle className="text-lg">{title}</CardTitle>
+          <div className="rounded-md p-1.5 gradient-bg text-white">
+            <Icon className="h-4 w-4" />
+          </div>
+          <CardTitle className="text-lg gradient-text">{title}</CardTitle>
         </div>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
@@ -34,10 +36,10 @@ export function ContentItem({ id, title, description, type, course, created, ico
       <CardFooter className="flex justify-between">
         <span className="text-xs text-muted-foreground">Created {created}</span>
         <div className="flex gap-2">
-          <Button variant="ghost" size="sm" asChild>
+          <Button variant="ghost" size="sm" asChild className="hover:bg-primary/10">
             <Link href={`/student/content-hub/${id}`}>View</Link>
           </Button>
-          <Button variant="outline" size="icon" className="h-8 w-8">
+          <Button variant="outline" size="icon" className="h-8 w-8 gradient-border">
             <Download className="h-4 w-4" />
             <span className="sr-only">Download</span>
           </Button>

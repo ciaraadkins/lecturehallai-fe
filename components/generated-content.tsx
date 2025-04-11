@@ -168,7 +168,7 @@ const FlashcardComponent = ({ content }: { content: string }) => {
         onClick={() => setFlipped(!flipped)}
       >
         <div className={`absolute w-full h-full backface-hidden flex flex-col items-center justify-center p-4 ${flipped ? 'opacity-0' : 'opacity-100'}`}>
-          <div className="text-lg font-medium">{flashcards[currentCardIndex].term}</div>
+          <div className="text-lg font-medium gradient-text">{flashcards[currentCardIndex].term}</div>
           <div className="text-xs text-muted-foreground mt-2">Click to reveal answer</div>
         </div>
         
@@ -413,27 +413,27 @@ function GeneratedContent({
     switch (type) {
       case 'study-guide':
         return {
-          border: 'border-blue-200 dark:border-blue-800',
-          headerBg: 'bg-blue-50 dark:bg-blue-900/30',
-          iconColor: 'text-blue-600 dark:text-blue-400'
+          border: 'border-primary/20',
+          headerBg: 'bg-primary/5',
+          iconColor: 'text-primary'
         }
       case 'flashcards':
         return {
-          border: 'border-green-200 dark:border-green-800',
-          headerBg: 'bg-green-50 dark:bg-green-900/30',
-          iconColor: 'text-green-600 dark:text-green-400'
+          border: 'border-secondary/20',
+          headerBg: 'bg-secondary/5',
+          iconColor: 'text-secondary'
         }
       case 'quiz':
         return {
-          border: 'border-purple-200 dark:border-purple-800',
-          headerBg: 'bg-purple-50 dark:bg-purple-900/30',
-          iconColor: 'text-purple-600 dark:text-purple-400'
+          border: 'border-accent/20',
+          headerBg: 'bg-accent/5',
+          iconColor: 'text-accent'
         }
       case 'audio':
         return {
-          border: 'border-amber-200 dark:border-amber-800',
-          headerBg: 'bg-amber-50 dark:bg-amber-900/30',
-          iconColor: 'text-amber-600 dark:text-amber-400'
+          border: 'border-amber-500/20',
+          headerBg: 'bg-amber-500/5',
+          iconColor: 'text-amber-500'
         }
       default:
         return {
@@ -447,7 +447,7 @@ function GeneratedContent({
   const styles = getTypeStyles()
   
   return (
-    <Card className={`w-full border ${styles.border} overflow-hidden`}>
+    <Card className={`w-full border ${styles.border} overflow-hidden card-gradient`}>
       <CardHeader className={`py-3 flex flex-row items-center gap-2 ${styles.headerBg}`}>
         <Icon className={`h-5 w-5 ${styles.iconColor}`} />
         <CardTitle className="text-base">{title}</CardTitle>
@@ -479,7 +479,7 @@ function GeneratedContent({
         </div>
         <Button 
           size="sm" 
-          className={`flex items-center gap-1 h-8 ${saved ? 'bg-green-600 hover:bg-green-700' : ''}`}
+          className={`flex items-center gap-1 h-8 ${saved ? 'bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-700 dark:hover:bg-emerald-800' : 'btn-gradient'}`}
           onClick={handleSave}
           disabled={saved}
         >
