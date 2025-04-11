@@ -1,102 +1,295 @@
 "use client"
 
-import { useState } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Send } from "lucide-react"
-
-interface Message {
-  role: "assistant" | "user"
-  content: string
-}
+import { Send, FileText, BookOpen, ListChecks, Headphones } from "lucide-react"
+import { GeneratedContent } from "@/components/generated-content"
+import { Message } from "@/hooks/use-conversations"
+import { COMMANDS } from "@/components/command-input"
 
 interface AIChatProps {
-  initialMessages?: Message[]
+  initialMessages: Message[]
   placeholder?: string
+  onGenerateContent?: (type: string) => void
+  onSendMessage?: (message: string) => void
+  onSaveContent?: () => void
+  onExportContent?: () => void
+  onRegenerateContent?: () => void
 }
 
 export function AIChat({
-  initialMessages = [
-    {
-      role: "assistant",
-      content: "Hello! I'm your AI study assistant. How can I help you today?",
-    },
-  ],
+  initialMessages,
   placeholder = "Ask a question or request study materials...",
+  onGenerateContent,
+  onSendMessage,
+  onSaveContent = () => console.log("Saving content"),
+  onExportContent = () => console.log("Exporting content"),
+  onRegenerateContent = () => console.log("Regenerating content")
 }: AIChatProps) {
-  const [messages, setMessages] = useState<Message[]>(initialMessages)
   const [inputValue, setInputValue] = useState("")
+  const [showCommands, setShowCommands] = useState(false)
+  const [commandFilter, setCommandFilter] = useState("")
+  const [selectedCommandIndex, setSelectedCommandIndex] = useState(0)
+  const scrollAreaRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLTextAreaElement>(null)
+  
+  // Store a stable reference to the messages
+  const messagesRef = useRef<Message[]>([])
+  
+  // Update the ref when initialMessages changes
+  useEffect(() => {
+    messagesRef.current = initialMessages
+    
+    if (scrollAreaRef.current) {
+      const scrollContainer = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]')
+      if (scrollContainer) {
+        // Add a small delay to ensure DOM updates are complete
+        setTimeout(() => {
+          scrollContainer.scrollTop = scrollContainer.scrollHeight
+        }, 50)
+      }
+    }
+  }, [initialMessages])
+  
+  // Handle @ detection and command filtering
+  useEffect(() => {
+    const match = inputValue.match(/@(\w*)$/)
+    if (match) {
+      setShowCommands(true)
+      setCommandFilter(match[1])
+      setSelectedCommandIndex(0)
+    } else {
+      setShowCommands(false)
+    }
+  }, [inputValue])
 
+  // Filter commands based on what the user has typed after @
+  const filteredCommands = COMMANDS.filter((command) =>
+    command.name.toLowerCase().includes(commandFilter.toLowerCase())
+  )
+
+  // Insert the selected command into the input
+  const insertCommand = (command: any) => {
+    // Replace the @partial with the full command tag
+    const newValue = inputValue.replace(/@\w*$/, command.tag + " ")
+    setInputValue(newValue)
+    setShowCommands(false)
+    
+    // Focus back on input and place cursor at the end
+    if (inputRef.current) {
+      inputRef.current.focus()
+      const length = newValue.length
+      inputRef.current.setSelectionRange(length, length)
+    }
+  }
+
+  // Handle keyboard navigation in the dropdown
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (showCommands) {
+      if (e.key === "ArrowDown") {
+        e.preventDefault()
+        setSelectedCommandIndex((prev) => 
+          prev < filteredCommands.length - 1 ? prev + 1 : prev
+        )
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault()
+        setSelectedCommandIndex((prev) => (prev > 0 ? prev - 1 : prev))
+      } else if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault()
+        if (filteredCommands.length > 0) {
+          insertCommand(filteredCommands[selectedCommandIndex])
+        }
+      } else if (e.key === "Escape") {
+        e.preventDefault()
+        setShowCommands(false)
+      }
+    } else if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault()
+      handleSendMessage()
+    }
+  }
+
+  // Handle sending message
   const handleSendMessage = () => {
     if (!inputValue.trim()) return
-
-    // Add user message
-    setMessages([...messages, { role: "user", content: inputValue }])
-
-    // Simulate AI response
-    setTimeout(() => {
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "assistant",
-          content:
-            "I'm analyzing your request. Here's what I can help you with based on your question. Would you like me to generate study materials, explain a concept, or create practice questions?",
-        },
-      ])
-    }, 1000)
-
+    
+    // Call the parent handler if provided
+    if (onSendMessage) {
+      onSendMessage(inputValue)
+    }
+    
     setInputValue("")
+  }
+
+  // Render typing indicator
+  const renderTypingIndicator = () => {
+    return (
+      <div className="flex items-center space-x-1">
+        <div className="h-2 w-2 bg-current rounded-full animate-bounce" style={{ animationDelay: "0ms" }}></div>
+        <div className="h-2 w-2 bg-current rounded-full animate-bounce" style={{ animationDelay: "300ms" }}></div>
+        <div className="h-2 w-2 bg-current rounded-full animate-bounce" style={{ animationDelay: "600ms" }}></div>
+      </div>
+    )
+  }
+
+  // Memoize message rendering to avoid unnecessary re-renders
+  const renderMessage = (message: Message, index: number) => {
+    // Handle different message types
+    if (message.isGenerating) {
+      return (
+        <div key={`typing-${index}`} className="flex justify-start mb-4">
+          <div className="flex items-start gap-3 max-w-[80%]">
+            <Avatar className="h-8 w-8 mt-0.5">
+              <AvatarImage src="/abstract-ai-network.png" alt="AI" />
+              <AvatarFallback>AI</AvatarFallback>
+            </Avatar>
+            <div className="rounded-lg py-2 px-3 bg-muted">
+              {renderTypingIndicator()}
+            </div>
+          </div>
+        </div>
+      )
+    } else if (message.contentType && message.contentType !== "text") {
+      return (
+        <div key={`generated-${index}`} className="flex justify-start mb-4">
+          <div className="flex items-start gap-3 max-w-[95%]">
+            <Avatar className="h-8 w-8 mt-0.5">
+              <AvatarImage src="/abstract-ai-network.png" alt="AI" />
+              <AvatarFallback>AI</AvatarFallback>
+            </Avatar>
+            <div className="w-full max-w-3xl">
+              <div className="rounded-lg p-3 bg-muted mb-2">
+                {message.content}
+              </div>
+              <GeneratedContent 
+                type={message.contentType as "study-guide" | "flashcards" | "quiz" | "audio"}
+                title={message.generatedContent?.title || message.contentType || ""}
+                content={message.generatedContent?.content || ""}
+                onSave={onSaveContent}
+                onExport={onExportContent}
+                onRegenerateRequest={onRegenerateContent}
+              />
+            </div>
+          </div>
+        </div>
+      )
+    } else {
+      const isUserMessage = message.role === "user"
+      
+      return (
+        <div key={`message-${index}`} className={`flex ${isUserMessage ? "justify-end" : "justify-start"} mb-4`}>
+          <div className={`flex items-start gap-3 max-w-[80%] ${isUserMessage ? "flex-row-reverse" : ""}`}>
+            <Avatar className="h-8 w-8 mt-0.5">
+              {isUserMessage ? (
+                <>
+                  <AvatarImage src="/diverse-students-studying.png" alt="You" />
+                  <AvatarFallback>You</AvatarFallback>
+                </>
+              ) : (
+                <>
+                  <AvatarImage src="/abstract-ai-network.png" alt="AI" />
+                  <AvatarFallback>AI</AvatarFallback>
+                </>
+              )}
+            </Avatar>
+            <div className={`rounded-lg p-3 ${isUserMessage ? "bg-primary text-primary-foreground" : "bg-muted"}`}>
+              {message.content}
+            </div>
+          </div>
+        </div>
+      )
+    }
   }
 
   return (
     <div className="flex flex-col h-full overflow-hidden">
-      <ScrollArea className="flex-1 p-4 h-full">
-        {messages.map((message, index) => (
-          <div key={index} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"} mb-4`}>
-            <div className={`flex items-start gap-3 max-w-[80%] ${message.role === "user" ? "flex-row-reverse" : ""}`}>
-              <Avatar className="h-8 w-8 mt-0.5">
-                {message.role === "assistant" ? (
-                  <>
-                    <AvatarImage src="/abstract-ai-network.png" alt="AI" />
-                    <AvatarFallback>AI</AvatarFallback>
-                  </>
-                ) : (
-                  <>
-                    <AvatarImage src="/diverse-students-studying.png" alt="You" />
-                    <AvatarFallback>You</AvatarFallback>
-                  </>
-                )}
-              </Avatar>
-              <div
-                className={`rounded-lg p-3 ${message.role === "assistant" ? "bg-muted" : "bg-primary text-primary-foreground"}`}
-              >
-                {message.content}
-              </div>
-            </div>
-          </div>
-        ))}
+      <ScrollArea className="flex-1 p-4 h-full chat-scroll-area" ref={scrollAreaRef}>
+        <div className="pb-4">
+          {initialMessages.map(renderMessage)}
+        </div>
       </ScrollArea>
-      <div className="p-4 border-t flex-shrink-0">
-        <div className="flex w-full items-center space-x-2">
+      <div className="p-4 border-t flex-shrink-0 space-y-3">
+        <div className="flex w-full items-center space-x-2 relative">
           <Textarea
+            ref={inputRef}
             placeholder={placeholder}
             className="flex-1 min-h-[60px] resize-none"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault()
-                handleSendMessage()
-              }
-            }}
+            onKeyDown={handleKeyDown}
           />
           <Button size="icon" onClick={handleSendMessage}>
             <Send className="h-4 w-4" />
             <span className="sr-only">Send</span>
           </Button>
+          
+          {/* Command dropdown */}
+          {showCommands && filteredCommands.length > 0 && (
+            <div 
+              className="absolute bottom-full mb-1 left-0 w-56 z-50 bg-popover rounded-md border shadow-md"
+            >
+              <div className="py-1 px-1">
+                {filteredCommands.map((command, index) => (
+                  <button
+                    key={command.id}
+                    className={`flex items-center w-full gap-2 px-2 py-1.5 text-sm rounded-sm ${
+                      index === selectedCommandIndex ? "bg-accent text-accent-foreground" : ""
+                    }`}
+                    onClick={() => insertCommand(command)}
+                    onMouseEnter={() => setSelectedCommandIndex(index)}
+                  >
+                    <command.icon className="h-4 w-4" />
+                    <span>{command.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
+        
+        {onGenerateContent && (
+          <div className="flex flex-wrap gap-2">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="rounded-full flex gap-1" 
+              onClick={() => onGenerateContent("study-guide")}
+            >
+              <FileText className="h-4 w-4" />
+              <span>Study Guide</span>
+            </Button>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="rounded-full flex gap-1" 
+              onClick={() => onGenerateContent("flashcards")}
+            >
+              <BookOpen className="h-4 w-4" />
+              <span>Flashcards</span>
+            </Button>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="rounded-full flex gap-1" 
+              onClick={() => onGenerateContent("quiz")}
+            >
+              <ListChecks className="h-4 w-4" />
+              <span>Practice Quiz</span>
+            </Button>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="rounded-full flex gap-1" 
+              onClick={() => onGenerateContent("audio")}
+            >
+              <Headphones className="h-4 w-4" />
+              <span>Audio Explanation</span>
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   )

@@ -5,7 +5,7 @@ import type React from "react"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
-import { AppSidebar } from "@/components/app-sidebar"
+import { CollapsibleSidebar } from "@/components/collapsible-sidebar"
 import { AuthProvider } from "@/contexts/auth-context"
 import { usePathname } from "next/navigation"
 import { useState, useEffect } from "react"
@@ -36,9 +36,10 @@ export default function ClientLayout({
               <div className="flex-1">{children}</div>
             ) : (
               <div className="flex h-screen">
-                <div className="w-64 border-r shrink-0">
-                  {mounted && <AppSidebar />}
-                </div>
+                {/* CollapsibleSidebar now provides its own spacing */}
+                <CollapsibleSidebar />
+                
+                {/* Content area now automatically adjusts based on sidebar width */}
                 <div className="flex-1 overflow-auto">{children}</div>
               </div>
             )}

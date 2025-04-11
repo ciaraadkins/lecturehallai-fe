@@ -27,6 +27,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useEffect, useState } from "react"
+import { RecentConversations } from "@/components/recent-conversations"
 
 export function AppSidebar() {
   const pathname = usePathname()
@@ -232,24 +233,10 @@ export function AppSidebar() {
         )}
 
         {isStudent && (
-          <div className="px-3 py-2">
-            <h3 className="mb-2 px-2 text-sm font-medium text-muted-foreground">Account</h3>
-            <div className="space-y-1">
-              <Link
-                href="/student/profile"
-                className={cn(
-                  "flex items-center px-2 py-1.5 text-sm rounded-md",
-                  pathname === "/student/profile"
-                    ? "bg-accent text-accent-foreground font-medium"
-                    : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
-                )}
-              >
-                <Settings className="mr-2 h-4 w-4" />
-                Profile & Preferences
-              </Link>
-            </div>
-          </div>
+          <RecentConversations />
         )}
+
+        {/* Remove Profile & Preferences from sidebar since it's in the dropdown */}
       </div>
 
       <div className="p-4 border-t mt-auto">

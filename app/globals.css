@@ -183,3 +183,34 @@ body {
 .chat-send-button {
   @apply absolute right-3 bottom-3 rounded-full h-9 w-9 flex items-center justify-center;
 }
+
+/* Sidebar resize handle styling */
+.sidebar-resize-handle {
+  @apply absolute top-0 right-0 w-1.5 h-full cursor-ew-resize z-30;
+  background: transparent;
+  transition: background-color 0.2s;
+}
+
+.sidebar-resize-handle:hover,
+.sidebar-resize-handle.resizing {
+  background-color: rgba(var(--primary-rgb), 0.15);
+}
+
+.sidebar-resize-handle::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 0.5px;
+  transform: translateY(-50%);
+  width: 2px;
+  height: 32px;
+  border-radius: 1px;
+  background-color: rgba(var(--primary-rgb), 0.2);
+  transition: background-color 0.2s, height 0.2s;
+}
+
+.sidebar-resize-handle:hover::after,
+.sidebar-resize-handle.resizing::after {
+  height: 64px;
+  background-color: rgba(var(--primary-rgb), 0.4);
+}
