@@ -118,7 +118,7 @@ export default function ContentHub() {
                   <span className="text-xs text-muted-foreground">Created {item.created}</span>
                   <div className="flex gap-2">
                     <Button variant="ghost" size="sm" asChild>
-                      <Link href={`/student/content-hub/${item.id}`}>View</Link>
+                      <Link href={`/student/content/${item.id}`}>View</Link>
                     </Button>
                     <Button variant="outline" size="icon" className="h-8 w-8">
                       <Download className="h-4 w-4" />
@@ -154,7 +154,7 @@ export default function ContentHub() {
                     <span className="text-xs text-muted-foreground">Created {item.created}</span>
                     <div className="flex gap-2">
                       <Button variant="ghost" size="sm" asChild>
-                        <Link href={`/student/content-hub/${item.id}`}>View</Link>
+                        <Link href={`/student/content/${item.id}`}>View</Link>
                       </Button>
                       <Button variant="outline" size="icon" className="h-8 w-8">
                         <Download className="h-4 w-4" />
@@ -190,7 +190,7 @@ export default function ContentHub() {
                     <span className="text-xs text-muted-foreground">Created {item.created}</span>
                     <div className="flex gap-2">
                       <Button variant="ghost" size="sm" asChild>
-                        <Link href={`/student/content-hub/${item.id}`}>View</Link>
+                        <Link href={`/student/content/${item.id}`}>View</Link>
                       </Button>
                       <Button variant="outline" size="icon" className="h-8 w-8">
                         <Download className="h-4 w-4" />
@@ -226,7 +226,7 @@ export default function ContentHub() {
                     <span className="text-xs text-muted-foreground">Created {item.created}</span>
                     <div className="flex gap-2">
                       <Button variant="ghost" size="sm" asChild>
-                        <Link href={`/student/content-hub/${item.id}`}>View</Link>
+                        <Link href={`/student/content/${item.id}`}>View</Link>
                       </Button>
                       <Button variant="outline" size="icon" className="h-8 w-8">
                         <Download className="h-4 w-4" />
@@ -262,7 +262,7 @@ export default function ContentHub() {
                     <span className="text-xs text-muted-foreground">Created {item.created}</span>
                     <div className="flex gap-2">
                       <Button variant="ghost" size="sm" asChild>
-                        <Link href={`/student/content-hub/${item.id}`}>View</Link>
+                        <Link href={`/student/content/${item.id}`}>View</Link>
                       </Button>
                       <Button variant="outline" size="icon" className="h-8 w-8">
                         <Download className="h-4 w-4" />
