@@ -199,22 +199,22 @@ export function AIChat({
 
   return (
     <div className="flex flex-col h-full overflow-hidden">
-      <ScrollArea className="flex-1 p-4 h-full chat-scroll-area" ref={scrollAreaRef}>
-        <div className="pb-4">
+      <ScrollArea className="flex-1 px-2 md:px-4 pt-2 pb-4 h-full chat-scroll-area" ref={scrollAreaRef}>
+        <div className="pb-16 md:pb-4"> {/* Added bottom padding for mobile to account for nav bar */}
           {initialMessages.map(renderMessage)}
         </div>
       </ScrollArea>
-      <div className="p-4 border-t flex-shrink-0 space-y-3">
+      <div className="p-2 md:p-4 border-t flex-shrink-0 space-y-3 bg-background/95 backdrop-blur-sm">
         <div className="flex w-full items-center space-x-2 relative">
           <Textarea
             ref={inputRef}
             placeholder={placeholder}
-            className="flex-1 min-h-[60px] resize-none"
+            className="flex-1 min-h-[50px] md:min-h-[60px] p-2 resize-none text-sm md:text-base rounded-2xl"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyDown}
           />
-          <Button size="icon" onClick={handleSendMessage} className="btn-gradient">
+          <Button size="icon" onClick={handleSendMessage} className="btn-gradient h-10 w-10 rounded-full">
             <Send className="h-4 w-4" />
             <span className="sr-only">Send</span>
           </Button>
@@ -228,13 +228,13 @@ export function AIChat({
                 {filteredCommands.map((command, index) => (
                   <button
                     key={command.id}
-                    className={`flex items-center w-full gap-2 px-2 py-1.5 text-sm rounded-sm ${
+                    className={`flex items-center w-full gap-2 px-2 py-2 text-sm rounded-md ${
                       index === selectedCommandIndex ? "bg-accent text-accent-foreground" : ""
                     }`}
                     onClick={() => insertCommand(command)}
                     onMouseEnter={() => setSelectedCommandIndex(index)}
                   >
-                    <command.icon className="h-4 w-4" />
+                    <command.icon className="h-5 w-5" />
                     <span>{command.name}</span>
                   </button>
                 ))}
@@ -244,11 +244,11 @@ export function AIChat({
         </div>
         
         {onGenerateContent && (
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-none">
             <Button 
               variant="outline" 
               size="sm" 
-              className="rounded-full flex gap-1 border gradient-border hover:border-transparent" 
+              className="rounded-full flex gap-1 border gradient-border hover:border-transparent whitespace-nowrap min-w-max" 
               onClick={() => onGenerateContent("study-guide")}
             >
               <FileText className="h-4 w-4" />
@@ -257,7 +257,7 @@ export function AIChat({
             <Button 
               variant="outline" 
               size="sm" 
-              className="rounded-full flex gap-1" 
+              className="rounded-full flex gap-1 whitespace-nowrap min-w-max" 
               onClick={() => onGenerateContent("flashcards")}
             >
               <BookOpen className="h-4 w-4" />
@@ -266,7 +266,7 @@ export function AIChat({
             <Button 
               variant="outline" 
               size="sm" 
-              className="rounded-full flex gap-1" 
+              className="rounded-full flex gap-1 whitespace-nowrap min-w-max" 
               onClick={() => onGenerateContent("quiz")}
             >
               <ListChecks className="h-4 w-4" />
@@ -275,7 +275,7 @@ export function AIChat({
             <Button 
               variant="outline" 
               size="sm" 
-              className="rounded-full flex gap-1" 
+              className="rounded-full flex gap-1 whitespace-nowrap min-w-max" 
               onClick={() => onGenerateContent("audio")}
             >
               <Headphones className="h-4 w-4" />

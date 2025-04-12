@@ -2,12 +2,27 @@
 
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { BookOpen, GraduationCap, LayoutDashboard, Library, MessageSquare, ArrowRight, Brain, Sparkles, Zap } from "lucide-react"
+import { BookOpen, GraduationCap, LayoutDashboard, Library, MessageSquare, ArrowRight, Brain, Sparkles, Zap, Menu, X } from "lucide-react"
 import { useAuth } from "@/contexts/auth-context"
 import { AILogo } from "@/components/ai-logo"
+import { useState, useEffect } from "react"
 
 export default function Home() {
   const { user, isAuthenticated } = useAuth()
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [mobileMenuOpen])
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -18,7 +33,9 @@ export default function Home() {
             <AILogo size="sm" />
             <span className="font-bold gradient-text ml-2 text-lg">LectureHall.ai</span>
           </Link>
-          <nav className="flex items-center gap-6">
+          
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center gap-6">
             <Link className="text-sm font-medium hover:text-primary transition-colors" href="/#features">
               Features
             </Link>
@@ -40,8 +57,87 @@ export default function Home() {
               </Button>
             )}
           </nav>
+          
+          {/* Mobile menu button */}
+          <button 
+            className="md:hidden p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            {mobileMenuOpen ? (
+              <X className="h-6 w-6 text-primary" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
+          </button>
         </div>
       </header>
+      
+      {/* Mobile menu */}
+      {mobileMenuOpen && (
+        <>
+          {/* Overlay */}
+          <div 
+            className="md:hidden fixed inset-0 top-16 bg-black/20 backdrop-blur-sm z-30 animate-fadeIn"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+          
+          {/* Menu */}
+          <div className="md:hidden fixed inset-x-0 top-16 z-40 bg-background/95 backdrop-blur-sm border-b shadow-lg animate-slideInDown">
+            <div className="px-6 py-4 space-y-3 max-h-[calc(100vh-4rem)] overflow-y-auto">
+              <Link 
+                className="flex items-center py-3 px-4 text-base font-medium hover:bg-primary/10 rounded-lg transition-colors" 
+                href="/#features"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <LayoutDashboard className="h-5 w-5 mr-3 text-primary" />
+                Features
+              </Link>
+              <Link 
+                className="flex items-center py-3 px-4 text-base font-medium hover:bg-primary/10 rounded-lg transition-colors" 
+                href="/about"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Sparkles className="h-5 w-5 mr-3 text-primary" />
+                About
+              </Link>
+              <Link 
+                className="flex items-center py-3 px-4 text-base font-medium hover:bg-primary/10 rounded-lg transition-colors" 
+                href="#"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <MessageSquare className="h-5 w-5 mr-3 text-primary" />
+                Contact
+              </Link>
+              <div className="pt-2 pb-3">
+                {isAuthenticated ? (
+                  <Button asChild size="lg" className="w-full shadow-md">
+                    <Link 
+                      href={user?.role === "teacher" ? "/teacher/dashboard" : "/student/ai-assistant"}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="flex items-center justify-center"
+                    >
+                      <BookOpen className="mr-2 h-5 w-5" />
+                      Go to AI Assistant
+                    </Link>
+                  </Button>
+                ) : (
+                  <Button asChild size="lg" className="w-full shadow-md btn-gradient">
+                    <Link 
+                      href="/login"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="flex items-center justify-center"
+                    >
+                      <ArrowRight className="mr-2 h-5 w-5" />
+                      Log In
+                    </Link>
+                  </Button>
+                )}
+              </div>
+            </div>
+          </div>
+        </>
+      )}
 
       <main className="flex-1">
         {/* Hero Section with background gradient and improved layout */}

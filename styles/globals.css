@@ -10,6 +10,21 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+  
+  /* Mobile touch optimizations */
+  .touch-manipulation {
+    touch-action: manipulation;
+  }
+  
+  /* Hide scrollbars while allowing scrolling */
+  .scrollbar-none {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 @layer components {
@@ -21,6 +36,36 @@ body {
     
     .chat-scroll-area {
       height: 100% !important;
+    }
+    
+    /* Mobile-specific styles */
+    .mobile-safe-bottom {
+      padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0));
+    }
+    
+    .mobile-touch-target {
+      min-height: 44px;
+      min-width: 44px;
+    }
+    
+    /* AI Assistant Mobile Styles */
+    .ai-assistant-container {
+      padding-bottom: 5rem;
+    }
+    
+    .ai-sidebar-open {
+      overflow: hidden;
+    }
+    
+    .mobile-sidebar-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 30;
+      backdrop-filter: blur(4px);
     }
   }
   

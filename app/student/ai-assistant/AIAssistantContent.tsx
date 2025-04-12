@@ -30,6 +30,40 @@ export default function AIAssistantContent() {
   const [selectedCourse, setSelectedCourse] = useState("math")
   const [selectedContentIds, setSelectedContentIds] = useState<string[]>([])
   const [isRightSidebarCollapsed, setIsRightSidebarCollapsed] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+  
+  // Check for mobile device on mount and when window resizes
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    
+    // Check initially
+    checkIfMobile()
+    
+    // Set sidebar to collapsed on mobile by default
+    if (window.innerWidth < 768) {
+      setIsRightSidebarCollapsed(true)
+    }
+    
+    // Add resize listener
+    window.addEventListener('resize', checkIfMobile)
+    
+    // Cleanup
+    return () => {
+      window.removeEventListener('resize', checkIfMobile)
+    }
+  }, [])
+  
+  // Set body class when sidebar is open on mobile
+  useEffect(() => {
+    if (isMobile && !isRightSidebarCollapsed) {
+      document.body.classList.add('ai-sidebar-open')
+    } else {
+      document.body.classList.remove('ai-sidebar-open')
+    }
+  }, [isMobile, isRightSidebarCollapsed])
+  
   const scrollAreaRef = useRef<HTMLDivElement>(null)
   const [activeCommand, setActiveCommand] = useState<string | null>(null)
   const searchParams = useSearchParams()
@@ -41,16 +75,6 @@ export default function AIAssistantContent() {
     loadConversation,
     createConversation
   } = useConversations()
-  
-  // Debugging functions
-  const debugState = () => {
-    console.log("DEBUGGING CURRENT STATE:")
-    console.log("activeMessages:", messages)
-    console.log("activeConversation:", activeConversation)
-    
-    // Log conversations array
-    console.log("All conversations:", conversations)
-  }
 
   // Load conversation from URL if present
   useEffect(() => {
@@ -347,52 +371,44 @@ export default function AIAssistantContent() {
 
   // Handle content type selection from buttons
   const runContentTypeDemo = (type: string) => {
-  console.log("runContentTypeDemo called with type:", type);
-  console.log("Current messages count:", messages.length);
+    console.log("runContentTypeDemo called with type:", type);
     
-  // Add a user message
-  let userMessage = `Create a ${type} about derivatives in calculus`;
-  console.log("Adding user message:", userMessage);
-  
-  addMessage({
-  role: "user",
-  content: userMessage,
-  contentType: "text"
-  });
-  
-  console.log("User message added, messages count:", messages.length);
-  
-  // Add typing indicator
-  console.log("Adding typing indicator");
-  addMessage({ 
-  role: "assistant", 
-  content: "", 
-    contentType: "text",
-      isGenerating: true
-  });
-  
-  console.log("Typing indicator added, messages count:", messages.length);
-  
-  // Generate content based on type
-  setTimeout(() => {
-    console.log("Generating content for", type);
-    switch(type) {
-      case "study-guide":
-      addMessage({ 
-      role: "assistant", 
-      content: "I've created a comprehensive study guide on derivatives in calculus.", 
-        contentType: "study-guide",
-      generatedContent: {
-        title: "Derivatives in Calculus",
-          content: SAMPLE_STUDY_GUIDE_CONTENT
-      }
+    // Add a user message
+    let userMessage = `Create a ${type} about derivatives in calculus`;
+    
+    addMessage({
+      role: "user",
+      content: userMessage,
+      contentType: "text"
     });
-      break;
-  case "flashcards":
+    
+    // Add typing indicator
     addMessage({ 
-        role: "assistant", 
-      content: "I've created flashcards for key derivative rules in calculus.", 
-          contentType: "flashcards",
+      role: "assistant", 
+      content: "", 
+      contentType: "text",
+      isGenerating: true
+    });
+    
+    // Generate content based on type
+    setTimeout(() => {
+      switch(type) {
+        case "study-guide":
+          addMessage({ 
+            role: "assistant", 
+            content: "I've created a comprehensive study guide on derivatives in calculus.", 
+            contentType: "study-guide",
+            generatedContent: {
+              title: "Derivatives in Calculus",
+              content: SAMPLE_STUDY_GUIDE_CONTENT
+            }
+          });
+          break;
+        case "flashcards":
+          addMessage({ 
+            role: "assistant", 
+            content: "I've created flashcards for key derivative rules in calculus.", 
+            contentType: "flashcards",
             generatedContent: {
               title: "Derivative Rules Flashcards",
               content: SAMPLE_FLASHCARDS_CONTENT
@@ -422,29 +438,32 @@ export default function AIAssistantContent() {
           });
           break;
       }
-      console.log("Content added, messages count:", messages.length);
     }, 1000);
   }
 
   return (
     <div className="flex h-screen w-full overflow-hidden">
       <div 
-        className="flex-1 flex flex-col transition-all duration-300 px-6 py-6 relative"
-        style={{ paddingRight: isRightSidebarCollapsed ? '3rem' : 'calc(420px + 1.5rem)' }}
+        className="flex-1 flex flex-col transition-all duration-300 px-3 md:px-6 py-4 md:py-6 relative"
+        style={{
+          paddingRight: isMobile 
+            ? '0.75rem' 
+            : (isRightSidebarCollapsed ? '3rem' : 'calc(420px + 1.5rem)')
+        }}
       >
         <div className="absolute top-0 left-0 right-0 h-64 pointer-events-none z-0 opacity-50">
           <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/5"></div>
         </div>
-        <div className="flex flex-col mb-6 gap-4">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight"><span className="gradient-text">AI Study Assistant</span></h1>
-            <p className="text-muted-foreground">Get personalized help and generate study materials</p>
+        <div className="flex flex-col mb-4 md:mb-6 gap-2 md:gap-4">
+          <div className="pl-10 md:pl-0"> {/* Add left padding for mobile to avoid overlap with hamburger menu */}
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight"><span className="gradient-text">AI Study Assistant</span></h1>
+            <p className="text-sm md:text-base text-muted-foreground">Get personalized help and generate study materials</p>
           </div>
         </div>
 
         <Card className="flex-1 flex flex-col overflow-hidden chat-container card-gradient">
-          <CardHeader className="px-4 py-3 border-b flex-shrink-0">
-            <div className="flex items-center justify-between">
+          <CardHeader className="px-3 py-3 border-b flex-shrink-0">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
               <div className="flex items-center space-x-3">
                 <AILogo size="md" />
                 <div>
@@ -453,10 +472,10 @@ export default function AIAssistantContent() {
                 </div>
               </div>
               <Select defaultValue={selectedCourse} onValueChange={setSelectedCourse}>
-                <SelectTrigger className="w-[360px]">
+                <SelectTrigger className="w-full md:w-[240px] lg:w-[360px]">
                   <SelectValue placeholder="Select course context" />
                 </SelectTrigger>
-                <SelectContent className="w-[360px]">
+                <SelectContent className="w-full md:w-[240px] lg:w-[360px]">
                   <SelectItem value="physics">Introduction to Physics</SelectItem>
                   <SelectItem value="math">Advanced Mathematics</SelectItem>
                   <SelectItem value="chemistry">Chemistry 101</SelectItem>
@@ -471,10 +490,8 @@ export default function AIAssistantContent() {
               placeholder="Ask a question or request study materials..."
               onGenerateContent={runContentTypeDemo}
               onSendMessage={(message) => {
-                console.log("onSendMessage called with:", message, typeof message);
                 // Validate message
                 if (typeof message !== 'string' || !message.trim()) {
-                  console.log("Invalid message, skipping");
                   return;
                 }
                 
@@ -487,47 +504,43 @@ export default function AIAssistantContent() {
                 
                 // Add user message to state
                 try {
-                  console.log("Adding user message to activeMessages, before:", messages.length);
                   addMessage(userMessage);
-                  console.log("User message added");
-                } catch (error) {
-                  console.error("Error adding user message:", error);
-                }
-                
-                // Add typing indicator after a delay
-                setTimeout(() => {
-                  try {
-                    // Create once, don't recreate in the callback
-                    const typingIndicator = { 
-                      role: "assistant", 
-                      content: "", 
-                      contentType: "text",
-                      isGenerating: true
-                    };
-                    
-                    addMessage(typingIndicator);
-                    console.log("Typing indicator added");
-                  } catch (error) {
-                    console.error("Error adding typing indicator:", error);
-                  }
                   
-                  // Generate a response after another delay
+                  // Add typing indicator after a delay
                   setTimeout(() => {
                     try {
                       // Create once, don't recreate in the callback
-                      const responseMessage = { 
+                      const typingIndicator = { 
                         role: "assistant", 
-                        content: "I'm here to help with your calculus studies. What specific topic would you like to explore?", 
-                        contentType: "text"
+                        content: "", 
+                        contentType: "text",
+                        isGenerating: true
                       };
                       
-                      addMessage(responseMessage);
-                      console.log("Response added");
+                      addMessage(typingIndicator);
+                      
+                      // Generate a response after another delay
+                      setTimeout(() => {
+                        try {
+                          // Create once, don't recreate in the callback
+                          const responseMessage = { 
+                            role: "assistant", 
+                            content: "I'm here to help with your calculus studies. What specific topic would you like to explore?", 
+                            contentType: "text"
+                          };
+                          
+                          addMessage(responseMessage);
+                        } catch (error) {
+                          console.error("Error adding response:", error);
+                        }
+                      }, 1000);
                     } catch (error) {
-                      console.error("Error adding response:", error);
+                      console.error("Error adding typing indicator:", error);
                     }
-                  }, 1000);
-                }, 100);
+                  }, 100);
+                } catch (error) {
+                  console.error("Error adding user message:", error);
+                }
               }}
               onSaveContent={handleSaveToContentHub}
               onExportContent={() => console.log("Exporting content")}
@@ -536,6 +549,14 @@ export default function AIAssistantContent() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Mobile sidebar overlay */}
+      {isMobile && !isRightSidebarCollapsed && (
+        <div 
+          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-30 md:hidden"
+          onClick={() => setIsRightSidebarCollapsed(true)}
+        />
+      )}
 
       {/* Right Sidebar */}
       <RightSidebar 

@@ -48,6 +48,30 @@ export function RightSidebar({ courseFilter, onContentSelectionChange, onCollaps
   const [isCourseContentOpen, setIsCourseContentOpen] = useState(true)
   const [selectedContentIds, setSelectedContentIds] = useState<string[]>([])
   const [allSelected, setAllSelected] = useState(true)
+  const [isMobile, setIsMobile] = useState(false)
+  
+  // Check for mobile on component mount and window resize
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    
+    // Check initially
+    checkIfMobile()
+    
+    // Set collapsed on mobile by default
+    if (window.innerWidth < 768) {
+      setIsCollapsed(true)
+    }
+    
+    // Add resize listener
+    window.addEventListener('resize', checkIfMobile)
+    
+    // Cleanup
+    return () => {
+      window.removeEventListener('resize', checkIfMobile)
+    }
+  }, [])
 
   // Content generation types
   const contentTypes = [
@@ -230,14 +254,17 @@ export function RightSidebar({ courseFilter, onContentSelectionChange, onCollaps
   return (
     <div className={cn(
       "fixed right-0 top-0 h-full z-40 transition-all duration-300 bg-background border-l",
-      isCollapsed ? "w-10" : "w-[420px]",
+      isCollapsed ? "w-0 md:w-10" : "w-full md:w-[420px]",
       className
     )}>
-      {/* Collapse button */}
+      {/* Collapse button - not visible when fully collapsed on mobile */}
       <Button
         variant="ghost"
         size="icon"
-        className="absolute top-4 -left-4 rounded-full border bg-background shadow-md z-50 h-8 w-8"
+        className={cn(
+          "absolute top-4 -left-4 rounded-full border bg-background shadow-md z-50 h-8 w-8",
+          isCollapsed && isMobile ? "opacity-0" : "opacity-100" // Hide on mobile when collapsed
+        )}
         onClick={() => setIsCollapsed(!isCollapsed)}
       >
         {isCollapsed ? (
@@ -246,6 +273,18 @@ export function RightSidebar({ courseFilter, onContentSelectionChange, onCollaps
           <ChevronRight className="h-4 w-4" />
         )}
       </Button>
+      
+      {/* Mobile floating button to show sidebar when collapsed */}
+      {isCollapsed && isMobile && (
+        <Button
+          variant="outline"
+          size="icon"
+          className="fixed bottom-20 right-4 rounded-full bg-background shadow-md z-50 h-12 w-12"
+          onClick={() => setIsCollapsed(false)}
+        >
+          <FileText className="h-5 w-5 text-primary" />
+        </Button>
+      )}
 
       {/* Sidebar content */}
       <div className={cn(
@@ -254,8 +293,24 @@ export function RightSidebar({ courseFilter, onContentSelectionChange, onCollaps
       )}>
         <div className="flex flex-col h-full">
           <div className="p-4 border-b bg-gradient-to-r from-secondary/5 to-primary/5">
-            <h2 className="text-xl font-semibold gradient-text">Learning Resources</h2>
-            <p className="text-sm text-muted-foreground">Study materials and course content</p>
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-xl font-semibold gradient-text">Learning Resources</h2>
+                <p className="text-sm text-muted-foreground">Study materials and course content</p>
+              </div>
+              
+              {/* Mobile close button */}
+              {isMobile && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="ml-2 h-8 w-8 rounded-full hover:bg-muted"
+                  onClick={() => setIsCollapsed(true)}
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </Button>
+              )}
+            </div>
           </div>
           
           <div className="flex-1 overflow-auto p-4 space-y-6">

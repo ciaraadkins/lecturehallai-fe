@@ -1,4 +1,3 @@
-// Add a client directive to ensure auth provider works properly
 "use client"
 
 import type React from "react"
@@ -9,6 +8,7 @@ import { CollapsibleSidebar } from "@/components/collapsible-sidebar"
 import { AuthProvider } from "@/contexts/auth-context"
 import { usePathname } from "next/navigation"
 import { useState, useEffect } from "react"
+import { setupMobileViewport, preventPullToRefresh } from "@/utils/mobile-utils"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -26,6 +26,14 @@ export default function ClientLayout({
   // Handle hydration mismatch by mounting after initial render
   useEffect(() => {
     setMounted(true)
+
+    // Setup mobile optimizations
+    setupMobileViewport()
+    const cleanup = preventPullToRefresh()
+
+    return () => {
+      cleanup()
+    }
   }, [])
 
   return (

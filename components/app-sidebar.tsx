@@ -120,7 +120,7 @@ export function AppSidebar() {
               <Link
                 href="/teacher/dashboard"
                 className={cn(
-                  "flex items-center px-2 py-1.5 text-sm rounded-md",
+                  "flex items-center px-3 py-2.5 text-sm rounded-md touch-manipulation",
                   pathname === "/teacher/dashboard"
                     ? "bg-accent text-accent-foreground font-medium relative overflow-hidden after:absolute after:inset-0 after:bg-gradient-to-r after:from-primary/10 after:to-accent/10 after:rounded-md after:z-[-1]"
                     : "text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground transition-colors",
@@ -132,7 +132,7 @@ export function AppSidebar() {
               <Link
                 href="/teacher/courses"
                 className={cn(
-                  "flex items-center px-2 py-1.5 text-sm rounded-md",
+                  "flex items-center px-3 py-2.5 text-sm rounded-md touch-manipulation",
                   pathname === "/teacher/courses" || pathname.startsWith("/teacher/courses/")
                     ? "bg-accent text-accent-foreground font-medium relative overflow-hidden after:absolute after:inset-0 after:bg-gradient-to-r after:from-primary/10 after:to-accent/10 after:rounded-md after:z-[-1]"
                     : "text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground transition-colors",
@@ -144,7 +144,7 @@ export function AppSidebar() {
               <Link
                 href="/teacher/content"
                 className={cn(
-                  "flex items-center px-2 py-1.5 text-sm rounded-md",
+                  "flex items-center px-3 py-2.5 text-sm rounded-md touch-manipulation",
                   pathname === "/teacher/content"
                     ? "bg-accent text-accent-foreground font-medium relative overflow-hidden after:absolute after:inset-0 after:bg-gradient-to-r after:from-primary/10 after:to-accent/10 after:rounded-md after:z-[-1]"
                     : "text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground transition-colors",
@@ -156,7 +156,7 @@ export function AppSidebar() {
               <Link
                 href="/teacher/insights"
                 className={cn(
-                  "flex items-center px-2 py-1.5 text-sm rounded-md",
+                  "flex items-center px-3 py-2.5 text-sm rounded-md touch-manipulation",
                   pathname === "/teacher/insights"
                     ? "bg-accent text-accent-foreground font-medium relative overflow-hidden after:absolute after:inset-0 after:bg-gradient-to-r after:from-primary/10 after:to-accent/10 after:rounded-md after:z-[-1]"
                     : "text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground transition-colors",
@@ -176,7 +176,7 @@ export function AppSidebar() {
               <Link
                 href="/student/ai-assistant"
                 className={cn(
-                  "flex items-center px-2 py-1.5 text-sm rounded-md",
+                  "flex items-center px-3 py-2.5 text-sm rounded-md touch-manipulation",
                   pathname === "/student/ai-assistant"
                     ? "bg-accent text-accent-foreground font-medium relative overflow-hidden after:absolute after:inset-0 after:bg-gradient-to-r after:from-primary/10 after:to-accent/10 after:rounded-md after:z-[-1]"
                     : "text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground transition-colors",
@@ -188,7 +188,7 @@ export function AppSidebar() {
               <Link
                 href="/student/content-hub"
                 className={cn(
-                  "flex items-center px-2 py-1.5 text-sm rounded-md",
+                  "flex items-center px-3 py-2.5 text-sm rounded-md touch-manipulation",
                   pathname === "/student/content-hub"
                     ? "bg-accent text-accent-foreground font-medium relative overflow-hidden after:absolute after:inset-0 after:bg-gradient-to-r after:from-primary/10 after:to-accent/10 after:rounded-md after:z-[-1]"
                     : "text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground transition-colors",
@@ -200,7 +200,7 @@ export function AppSidebar() {
               <Link
                 href="/student/courses"
                 className={cn(
-                  "flex items-center px-2 py-1.5 text-sm rounded-md",
+                  "flex items-center px-3 py-2.5 text-sm rounded-md touch-manipulation",
                   pathname === "/student/courses" || pathname.startsWith("/student/courses/")
                     ? "bg-accent text-accent-foreground font-medium relative overflow-hidden after:absolute after:inset-0 after:bg-gradient-to-r after:from-primary/10 after:to-accent/10 after:rounded-md after:z-[-1]"
                     : "text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground transition-colors",
@@ -212,7 +212,7 @@ export function AppSidebar() {
               <Link
                 href="/student/dashboard"
                 className={cn(
-                  "flex items-center px-2 py-1.5 text-sm rounded-md",
+                  "flex items-center px-3 py-2.5 text-sm rounded-md touch-manipulation",
                   pathname === "/student/dashboard"
                     ? "bg-accent text-accent-foreground font-medium relative overflow-hidden after:absolute after:inset-0 after:bg-gradient-to-r after:from-primary/10 after:to-accent/10 after:rounded-md after:z-[-1]"
                     : "text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground transition-colors",

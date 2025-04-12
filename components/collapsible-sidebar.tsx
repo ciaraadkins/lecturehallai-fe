@@ -18,6 +18,27 @@ export function CollapsibleSidebar({ className }: { className?: string }) {
   const startXRef = useRef(0)
   const startWidthRef = useRef(0)
   const pathname = usePathname()
+  
+  // Touch handling for mobile swipe gestures
+  const touchStartX = useRef(0)
+  const touchMoveX = useRef(0)
+  
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX
+  }
+  
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchMoveX.current = e.touches[0].clientX
+  }
+  
+  const handleTouchEnd = () => {
+    if (isMobile && isMobileOpen) {
+      const swipeDistance = touchStartX.current - touchMoveX.current
+      if (swipeDistance > 50) { // 50px threshold to detect swipe
+        setIsMobileOpen(false)
+      }
+    }
+  }
 
   // Min and max sidebar widths
   const MIN_SIDEBAR_WIDTH = 200
@@ -104,7 +125,7 @@ export function CollapsibleSidebar({ className }: { className?: string }) {
         <Button
           variant="ghost"
           size="icon"
-          className="fixed top-3 left-3 z-50 md:hidden"
+          className="fixed top-3 left-3 z-50 md:hidden mobile-touch-target"
           onClick={toggleSidebar}
         >
           <Menu className="h-5 w-5" />
@@ -120,6 +141,9 @@ export function CollapsibleSidebar({ className }: { className?: string }) {
           className
         )}
         style={{ width: `${actualWidth}px` }}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
       >
         <div className="flex flex-col h-full relative">
           {/* Sidebar content */}
@@ -159,11 +183,11 @@ export function CollapsibleSidebar({ className }: { className?: string }) {
         </div>
       </div>
 
-      {/* Overlay for mobile */}
+      {/* Overlay for mobile with swipe gesture support */}
       {isMobile && isMobileOpen && (
         <div 
-          className="fixed inset-0 bg-black/30 z-30 md:hidden"
-          onClick={() => setIsMobileOpen(false)} 
+          className="fixed inset-0 bg-black/30 z-30 md:hidden animate-fadeIn"
+          onClick={() => setIsMobileOpen(false)}
         />
       )}
 
