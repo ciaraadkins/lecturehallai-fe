@@ -1,3 +1,16 @@
+/* Sidebar styling */
+.sidebar-collapsed-icon {
+  @apply w-10 h-10 rounded-md flex items-center justify-center transition-colors;
+}
+
+.sidebar-collapsed-icon:hover {
+  @apply bg-accent/50 text-foreground;
+}
+
+.sidebar-collapsed-icon.active {
+  @apply bg-accent text-accent-foreground;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -47,7 +60,7 @@ body {
     /* Add a warning-text custom property */
     --warning-text: 38 92% 50%;
     --radius: 0.75rem;
-    --sidebar-background: 263 30% 97%;
+    --sidebar-background: 220 20% 97%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
     --sidebar-primary-foreground: 0 0% 98%;
@@ -99,7 +112,7 @@ body {
     --chart-3: 261 73% 50%;
     --chart-4: 38 92% 42%;
     --chart-5: 160 84% 31%;
-    --sidebar-background: 263 30% 12%;
+    --sidebar-background: 220 20% 12%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
     --sidebar-primary-foreground: 0 0% 100%;

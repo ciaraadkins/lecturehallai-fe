@@ -5,6 +5,7 @@ import FlashcardView from "@/components/content-views/flashcards/FlashcardView";
 import QuizView from "@/components/content-views/quiz/QuizView";
 import AudioView from "@/components/content-views/audio/AudioView";
 import SummaryView from "@/components/content-views/summary/SummaryView";
+import ErrorBoundary from "@/components/error-boundary";
 
 // In a real application, this would come from an API
 // This is just mock data for demonstration purposes
@@ -227,7 +228,11 @@ export default function ContentPage({ params }: ContentPageProps) {
     case "Study Guide":
       return <StudyGuideView {...content} id={content.id} />;
     case "Flashcards":
-      return <FlashcardView {...content} id={content.id} />;
+      return (
+        <ErrorBoundary>
+          <FlashcardView {...content} id={content.id} />
+        </ErrorBoundary>
+      );
     case "Quiz":
       return <QuizView {...content} id={content.id} />;
     case "Audio":

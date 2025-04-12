@@ -1,8 +1,9 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { ChevronLeft, ChevronRight, ChevronDown, ChevronUp, FileText, BookOpen, ListChecks, Headphones, Clock, Play, File, ArrowRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight, ChevronDown, ChevronUp, FileText, BookOpen, ListChecks, Headphones, Clock, Play, File, ArrowRight, BookOpenText, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -43,7 +44,7 @@ interface RightSidebarProps {
 }
 
 export function RightSidebar({ courseFilter, onContentSelectionChange, onCollapsedChange, className }: RightSidebarProps) {
-  const [isCollapsed, setIsCollapsed] = useState(false)
+  const [isCollapsed, setIsCollapsed] = useState(true)
   const [isRecentGenerationsOpen, setIsRecentGenerationsOpen] = useState(true)
   const [isCourseContentOpen, setIsCourseContentOpen] = useState(true)
   const [selectedContentIds, setSelectedContentIds] = useState<string[]>([])
@@ -254,36 +255,23 @@ export function RightSidebar({ courseFilter, onContentSelectionChange, onCollaps
   return (
     <div className={cn(
       "fixed right-0 top-0 h-full z-40 transition-all duration-300 bg-background border-l",
-      isCollapsed ? "w-0 md:w-10" : "w-full md:w-[420px]",
+      isCollapsed ? "w-0 md:w-0" : "w-full md:w-[420px]",
       className
     )}>
-      {/* Collapse button - not visible when fully collapsed on mobile */}
-      <Button
-        variant="ghost"
-        size="icon"
-        className={cn(
-          "absolute top-4 -left-4 rounded-full border bg-background shadow-md z-50 h-8 w-8",
-          isCollapsed && isMobile ? "opacity-0" : "opacity-100" // Hide on mobile when collapsed
-        )}
-        onClick={() => setIsCollapsed(!isCollapsed)}
-      >
-        {isCollapsed ? (
-          <ChevronLeft className="h-4 w-4" />
-        ) : (
-          <ChevronRight className="h-4 w-4" />
-        )}
-      </Button>
+      {/* Collapse button removed and replaced with sidebar icon */}
       
-      {/* Mobile floating button to show sidebar when collapsed */}
-      {isCollapsed && isMobile && (
-        <Button
-          variant="outline"
-          size="icon"
-          className="fixed bottom-20 right-4 rounded-full bg-background shadow-md z-50 h-12 w-12"
-          onClick={() => setIsCollapsed(false)}
-        >
-          <FileText className="h-5 w-5 text-primary" />
-        </Button>
+      {/* Sidebar toggle */}
+      {isCollapsed && (
+        <div className="fixed right-0 top-6 z-40 mr-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-10 w-10 rounded-md bg-white flex items-center justify-center"
+            onClick={() => setIsCollapsed(false)}
+          >
+            <BookOpenText className="h-5 w-5 text-primary" />
+          </Button>
+        </div>
       )}
 
       {/* Sidebar content */}
@@ -292,24 +280,22 @@ export function RightSidebar({ courseFilter, onContentSelectionChange, onCollaps
         isCollapsed ? "opacity-0 invisible" : "opacity-100 visible"
       )}>
         <div className="flex flex-col h-full">
-          <div className="p-4 border-b bg-gradient-to-r from-secondary/5 to-primary/5">
-            <div className="flex items-center justify-between">
+          <div className="p-4 border-b flex items-center justify-between bg-gradient-to-r from-secondary/5 to-primary/5">
+            <div className="flex items-center justify-between w-full pr-2">
               <div>
-                <h2 className="text-xl font-semibold gradient-text">Learning Resources</h2>
+                <h2 className="text-xl font-semibold">Learning Resources</h2>
                 <p className="text-sm text-muted-foreground">Study materials and course content</p>
               </div>
               
-              {/* Mobile close button */}
-              {isMobile && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="ml-2 h-8 w-8 rounded-full hover:bg-muted"
-                  onClick={() => setIsCollapsed(true)}
-                >
-                  <ChevronRight className="h-5 w-5" />
-                </Button>
-              )}
+              {/* Close button */}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 rounded-md hover:bg-muted/50 ml-2 flex-shrink-0"
+                onClick={() => setIsCollapsed(true)}
+              >
+                <X className="h-5 w-5" />
+              </Button>
             </div>
           </div>
           

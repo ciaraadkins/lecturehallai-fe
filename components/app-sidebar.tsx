@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { useEffect, useState } from "react"
 import { RecentConversations } from "@/components/recent-conversations"
+import { Separator } from "@/components/ui/separator"
 
 export function AppSidebar() {
   const pathname = usePathname()
@@ -44,7 +45,7 @@ export function AppSidebar() {
   if (!mounted) {
     return (
       <div className="h-full flex flex-col bg-[hsl(var(--sidebar-background))]">
-        <div className="p-4 border-b bg-gradient-to-r from-primary/10 to-primary/5">
+        <div className="p-4 border-b">
           <div className="flex items-center gap-2">
             <AILogo size="md" />
             <span className="font-bold text-xl gradient-text">LectureHall.ai</span>
@@ -59,7 +60,7 @@ export function AppSidebar() {
   if (isLoading) {
     return (
       <div className="h-full flex flex-col bg-[hsl(var(--sidebar-background))]">
-        <div className="p-4 border-b bg-gradient-to-r from-primary/10 to-primary/5">
+        <div className="p-4 border-b">
           <div className="flex items-center gap-2">
             <AILogo size="md" />
             <span className="font-bold text-xl">LectureHall.ai</span>
@@ -74,7 +75,7 @@ export function AppSidebar() {
   if (!isAuthenticated) {
     return (
       <div className="h-full flex flex-col bg-[hsl(var(--sidebar-background))]">
-        <div className="p-4 border-b bg-gradient-to-r from-primary/10 to-primary/5">
+        <div className="p-4 border-b">
           <Link href="/" className="flex items-center gap-2">
             <AILogo size="md" />
             <span className="font-bold text-xl gradient-text">LectureHall.ai</span>
@@ -105,64 +106,64 @@ export function AppSidebar() {
 
   return (
     <div className="h-full flex flex-col bg-[hsl(var(--sidebar-background))]">
-      <div className="p-4 border-b bg-gradient-to-r from-primary/10 to-primary/5">
+      <div className="p-4 border-b">
         <Link href="/" className="flex items-center gap-2">
           <AILogo size="md" />
           <span className="font-bold text-xl gradient-text">LectureHall.ai</span>
         </Link>
       </div>
 
-      <div className="flex-1 overflow-auto py-2">
+      <div className="flex-1 overflow-auto py-4">
         {isTeacher && (
           <div className="px-3 py-2">
-            <h3 className="mb-2 px-2 text-sm font-medium text-muted-foreground">Teacher Portal</h3>
+            <h3 className="mb-3 px-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">Teacher Portal</h3>
             <div className="space-y-1">
               <Link
                 href="/teacher/dashboard"
                 className={cn(
-                  "flex items-center px-3 py-2.5 text-sm rounded-md touch-manipulation",
+                  "flex items-center px-3 py-2 text-sm rounded-md",
                   pathname === "/teacher/dashboard"
-                    ? "bg-accent text-accent-foreground font-medium relative overflow-hidden after:absolute after:inset-0 after:bg-gradient-to-r after:from-primary/10 after:to-accent/10 after:rounded-md after:z-[-1]"
+                    ? "bg-accent text-accent-foreground font-medium"
                     : "text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground transition-colors",
                 )}
               >
-                <BarChart className="mr-2 h-4 w-4" />
+                <BarChart className="mr-3 h-4 w-4" />
                 Dashboard
               </Link>
               <Link
                 href="/teacher/courses"
                 className={cn(
-                  "flex items-center px-3 py-2.5 text-sm rounded-md touch-manipulation",
+                  "flex items-center px-3 py-2 text-sm rounded-md",
                   pathname === "/teacher/courses" || pathname.startsWith("/teacher/courses/")
-                    ? "bg-accent text-accent-foreground font-medium relative overflow-hidden after:absolute after:inset-0 after:bg-gradient-to-r after:from-primary/10 after:to-accent/10 after:rounded-md after:z-[-1]"
+                    ? "bg-accent text-accent-foreground font-medium"
                     : "text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground transition-colors",
                 )}
               >
-                <Layers className="mr-2 h-4 w-4" />
+                <Layers className="mr-3 h-4 w-4" />
                 Course Management
               </Link>
               <Link
                 href="/teacher/content"
                 className={cn(
-                  "flex items-center px-3 py-2.5 text-sm rounded-md touch-manipulation",
+                  "flex items-center px-3 py-2 text-sm rounded-md",
                   pathname === "/teacher/content"
-                    ? "bg-accent text-accent-foreground font-medium relative overflow-hidden after:absolute after:inset-0 after:bg-gradient-to-r after:from-primary/10 after:to-accent/10 after:rounded-md after:z-[-1]"
+                    ? "bg-accent text-accent-foreground font-medium"
                     : "text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground transition-colors",
                 )}
               >
-                <Library className="mr-2 h-4 w-4" />
+                <Library className="mr-3 h-4 w-4" />
                 Content Library
               </Link>
               <Link
                 href="/teacher/insights"
                 className={cn(
-                  "flex items-center px-3 py-2.5 text-sm rounded-md touch-manipulation",
+                  "flex items-center px-3 py-2 text-sm rounded-md",
                   pathname === "/teacher/insights"
-                    ? "bg-accent text-accent-foreground font-medium relative overflow-hidden after:absolute after:inset-0 after:bg-gradient-to-r after:from-primary/10 after:to-accent/10 after:rounded-md after:z-[-1]"
+                    ? "bg-accent text-accent-foreground font-medium"
                     : "text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground transition-colors",
                 )}
               >
-                <Users className="mr-2 h-4 w-4" />
+                <Users className="mr-3 h-4 w-4" />
                 Student Insights
               </Link>
             </div>
@@ -171,54 +172,54 @@ export function AppSidebar() {
 
         {isStudent && (
           <div className="px-3 py-2">
-            <h3 className="mb-2 px-2 text-sm font-medium text-muted-foreground">Learning</h3>
+            <h3 className="mb-3 px-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">Learning</h3>
             <div className="space-y-1">
               <Link
                 href="/student/ai-assistant"
                 className={cn(
-                  "flex items-center px-3 py-2.5 text-sm rounded-md touch-manipulation",
+                  "flex items-center px-3 py-2 text-sm rounded-md",
                   pathname === "/student/ai-assistant"
-                    ? "bg-accent text-accent-foreground font-medium relative overflow-hidden after:absolute after:inset-0 after:bg-gradient-to-r after:from-primary/10 after:to-accent/10 after:rounded-md after:z-[-1]"
+                    ? "bg-accent text-accent-foreground font-medium"
                     : "text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground transition-colors",
                 )}
               >
-                <MessageSquare className="mr-2 h-4 w-4" />
+                <MessageSquare className="mr-3 h-4 w-4" />
                 AI Study Assistant
               </Link>
               <Link
                 href="/student/content-hub"
                 className={cn(
-                  "flex items-center px-3 py-2.5 text-sm rounded-md touch-manipulation",
-                  pathname === "/student/content-hub"
-                    ? "bg-accent text-accent-foreground font-medium relative overflow-hidden after:absolute after:inset-0 after:bg-gradient-to-r after:from-primary/10 after:to-accent/10 after:rounded-md after:z-[-1]"
+                  "flex items-center px-3 py-2 text-sm rounded-md",
+                  pathname === "/student/content-hub" || pathname.startsWith("/student/content/")
+                    ? "bg-accent text-accent-foreground font-medium"
                     : "text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground transition-colors",
                 )}
               >
-                <FileText className="mr-2 h-4 w-4" />
+                <FileText className="mr-3 h-4 w-4" />
                 Content Hub
               </Link>
               <Link
                 href="/student/courses"
                 className={cn(
-                  "flex items-center px-3 py-2.5 text-sm rounded-md touch-manipulation",
+                  "flex items-center px-3 py-2 text-sm rounded-md",
                   pathname === "/student/courses" || pathname.startsWith("/student/courses/")
-                    ? "bg-accent text-accent-foreground font-medium relative overflow-hidden after:absolute after:inset-0 after:bg-gradient-to-r after:from-primary/10 after:to-accent/10 after:rounded-md after:z-[-1]"
+                    ? "bg-accent text-accent-foreground font-medium"
                     : "text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground transition-colors",
                 )}
               >
-                <BookOpen className="mr-2 h-4 w-4" />
+                <BookOpen className="mr-3 h-4 w-4" />
                 Course View
               </Link>
               <Link
                 href="/student/dashboard"
                 className={cn(
-                  "flex items-center px-3 py-2.5 text-sm rounded-md touch-manipulation",
+                  "flex items-center px-3 py-2 text-sm rounded-md",
                   pathname === "/student/dashboard"
-                    ? "bg-accent text-accent-foreground font-medium relative overflow-hidden after:absolute after:inset-0 after:bg-gradient-to-r after:from-primary/10 after:to-accent/10 after:rounded-md after:z-[-1]"
+                    ? "bg-accent text-accent-foreground font-medium"
                     : "text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground transition-colors",
                 )}
               >
-                <BarChart className="mr-2 h-4 w-4" />
+                <BarChart className="mr-3 h-4 w-4" />
                 Dashboard
               </Link>
             </div>
@@ -226,20 +227,23 @@ export function AppSidebar() {
         )}
 
         {isStudent && (
-          <RecentConversations />
+          <>
+            <Separator className="my-4 mx-3" />
+            <RecentConversations />
+          </>
         )}
       </div>
 
-      <div className="p-4 border-t mt-auto">
+      <div className="p-3 border-t mt-auto">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="w-full flex items-center justify-start p-2">
+            <Button variant="ghost" className="w-full flex items-center justify-start p-2 rounded-lg hover:bg-accent/50">
               <Avatar className="h-8 w-8 mr-2">
                 <AvatarImage src={user?.avatar} alt={user?.name} />
                 <AvatarFallback>{user?.name?.charAt(0)}</AvatarFallback>
               </Avatar>
               <div className="flex flex-col items-start">
-                <span className="text-sm font-medium">{user?.name}</span>
+                <span className="text-sm font-medium truncate max-w-[140px]">{user?.name}</span>
                 <span className="text-xs text-muted-foreground capitalize">{user?.role}</span>
               </div>
             </Button>
