@@ -20,6 +20,7 @@ export default function ClientLayout({
   const pathname = usePathname()
   const isLoginPage = pathname === "/login"
   const isHomePage = pathname === "/"
+  const isAboutPage = pathname === "/about"
   const [mounted, setMounted] = useState(false)
 
   // Handle hydration mismatch by mounting after initial render
@@ -32,7 +33,7 @@ export default function ClientLayout({
       <body className={inter.className} suppressHydrationWarning>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           <AuthProvider>
-            {isLoginPage || isHomePage ? (
+            {isLoginPage || isHomePage || isAboutPage ? (
               <div className="flex-1">{children}</div>
             ) : (
               <div className="flex h-screen">
