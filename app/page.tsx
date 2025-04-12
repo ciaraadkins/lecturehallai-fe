@@ -19,7 +19,7 @@ export default function Home() {
             <span className="font-bold gradient-text ml-2 text-lg">LectureHall.ai</span>
           </Link>
           <nav className="flex items-center gap-6">
-            <Link className="text-sm font-medium hover:text-primary transition-colors" href="#features">
+            <Link className="text-sm font-medium hover:text-primary transition-colors" href="/#features">
               Features
             </Link>
             <Link className="text-sm font-medium hover:text-primary transition-colors" href="/about">

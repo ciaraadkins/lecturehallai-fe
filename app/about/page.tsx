@@ -8,28 +8,28 @@ import { AILogo } from "@/components/ai-logo"
 export default function About() {
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="px-4 lg:px-6 h-14 flex items-center border-b">
-        <Link className="flex items-center justify-center" href="/">
-          <AILogo size="sm" />
-          <span className="font-bold gradient-text ml-2">LectureHall.ai</span>
-        </Link>
-        <nav className="ml-auto flex gap-4 sm:gap-6">
-          <Link className="text-sm font-medium hover:underline underline-offset-4" href="/">
-            Home
+      {/* Enhanced Header with shadow and better spacing - matches home page */}
+      <header className="px-6 lg:px-8 h-16 flex items-center border-b shadow-sm sticky top-0 bg-background/95 backdrop-blur-sm z-50">
+        <div className="container mx-auto flex items-center justify-between">
+          <Link className="flex items-center justify-center" href="/">
+            <AILogo size="sm" />
+            <span className="font-bold gradient-text ml-2 text-lg">LectureHall.ai</span>
           </Link>
-          <Link className="text-sm font-medium hover:underline underline-offset-4" href="#">
-            Features
-          </Link>
-          <Link className="text-sm font-medium hover:underline underline-offset-4 text-primary" href="/about">
-            About
-          </Link>
-          <Link className="text-sm font-medium hover:underline underline-offset-4" href="#">
-            Contact
-          </Link>
-          <Button asChild size="sm">
-            <Link href="/login">Log In</Link>
-          </Button>
-        </nav>
+          <nav className="flex items-center gap-6">
+            <Link className="text-sm font-medium hover:text-primary transition-colors" href="/#features">
+              Features
+            </Link>
+            <Link className="text-sm font-medium text-primary" href="/about">
+              About
+            </Link>
+            <Link className="text-sm font-medium hover:text-primary transition-colors" href="#">
+              Contact
+            </Link>
+            <Button asChild size="sm" className="ml-2 shadow-md">
+              <Link href="/login">Log In</Link>
+            </Button>
+          </nav>
+        </div>
       </header>
       <main className="flex-1">
         <section className="w-full py-12 md:py-16 lg:py-20">
@@ -122,16 +122,40 @@ export default function About() {
           </div>
         </section>
       </main>
-      <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
-        <p className="text-xs text-gray-500 dark:text-gray-400">© 2023 LectureHall.ai. All rights reserved.</p>
-        <nav className="sm:ml-auto flex gap-4 sm:gap-6">
-          <Link className="text-xs hover:underline underline-offset-4" href="#">
-            Terms of Service
-          </Link>
-          <Link className="text-xs hover:underline underline-offset-4" href="#">
-            Privacy
-          </Link>
-        </nav>
+      {/* Footer with improved layout and links */}
+      <footer className="border-t bg-gray-50 dark:bg-gray-900/50">
+        <div className="container mx-auto px-6 py-12">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div className="col-span-1 md:col-span-2">
+              <Link className="flex items-center mb-4" href="/">
+                <AILogo size="sm" />
+                <span className="font-bold gradient-text ml-2 text-lg">LectureHall.ai</span>
+              </Link>
+              <p className="text-muted-foreground mb-4 max-w-md">
+                AI-powered educational platform creating personalized learning experiences for students of all types.
+              </p>
+              <p className="text-sm text-muted-foreground">© 2023 LectureHall.ai. All rights reserved.</p>
+            </div>
+            
+            <div>
+              <h4 className="font-semibold text-lg mb-4">Platform</h4>
+              <ul className="space-y-2">
+                <li><Link className="text-muted-foreground hover:text-primary transition-colors" href="/#features">Features</Link></li>
+                <li><Link className="text-muted-foreground hover:text-primary transition-colors" href="/about">About</Link></li>
+                <li><Link className="text-muted-foreground hover:text-primary transition-colors" href="#">Contact</Link></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 className="font-semibold text-lg mb-4">Legal</h4>
+              <ul className="space-y-2">
+                <li><Link className="text-muted-foreground hover:text-primary transition-colors" href="#">Terms of Service</Link></li>
+                <li><Link className="text-muted-foreground hover:text-primary transition-colors" href="#">Privacy Policy</Link></li>
+                <li><Link className="text-muted-foreground hover:text-primary transition-colors" href="#">Accessibility</Link></li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </footer>
     </div>
   )
