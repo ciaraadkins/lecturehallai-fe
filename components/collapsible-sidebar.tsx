@@ -136,11 +136,11 @@ export function CollapsibleSidebar({ className }: { className?: string }) {
       <div
         ref={sidebarRef}
         className={cn(
-          "fixed inset-y-0 left-0 z-40 transition-all duration-300 bg-background border-r",
+          "fixed inset-y-0 left-0 z-40 transition-all duration-300 bg-background border-r overscroll-none",
           isMobile && (isMobileOpen ? "translate-x-0" : "-translate-x-full"),
           className
         )}
-        style={{ width: `${actualWidth}px` }}
+        style={{ width: `${actualWidth}px`, touchAction: 'pan-y' }}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
@@ -188,6 +188,7 @@ export function CollapsibleSidebar({ className }: { className?: string }) {
         <div 
           className="fixed inset-0 bg-black/30 z-30 md:hidden animate-fadeIn"
           onClick={() => setIsMobileOpen(false)}
+          style={{ touchAction: 'pan-y' }} // Allow vertical scrolling on overlay
         />
       )}
 

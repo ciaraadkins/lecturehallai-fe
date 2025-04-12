@@ -44,12 +44,12 @@ export default function ClientLayout({
             {isLoginPage || isHomePage || isAboutPage ? (
               <div className="flex-1">{children}</div>
             ) : (
-              <div className="flex h-screen">
+              <div className="flex min-h-screen h-full overflow-hidden">
                 {/* CollapsibleSidebar now provides its own spacing */}
                 <CollapsibleSidebar />
                 
                 {/* Content area now automatically adjusts based on sidebar width */}
-                <div className="flex-1 overflow-auto">{children}</div>
+                <div className="flex-1 overflow-y-auto overflow-x-hidden -webkit-overflow-scrolling-touch">{children}</div>
               </div>
             )}
           </AuthProvider>

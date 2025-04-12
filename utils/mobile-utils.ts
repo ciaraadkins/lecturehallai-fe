@@ -31,10 +31,10 @@ export const setupMobileViewport = (): void => {
     document.head.appendChild(viewportMeta)
   }
   
-  // Set viewport properties
+  // Set viewport properties - allow user scaling for accessibility
   viewportMeta.setAttribute(
     'content', 
-    'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover'
+    'width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover'
   )
   
   // Add safe-area support for notched devices
@@ -55,6 +55,14 @@ export const setupMobileViewport = (): void => {
     .safe-area-top {
       padding-top: env(safe-area-inset-top, 0);
     }
+    
+    /* Explicit body overflow handling */
+    body {
+      overflow-x: hidden;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-y: none;
+    }
   `
   document.head.appendChild(style)
 }
@@ -66,49 +74,94 @@ export const setupMobileViewport = (): void => {
 export const preventPullToRefresh = (): (() => void) => {
   if (typeof document === 'undefined') return () => {}
   
-  // Prevent overscroll/bounce
-  const handleTouchMove = (e: TouchEvent) => {
-    // Allow scrolling of elements that should scroll
-    const element = e.target as HTMLElement
-    const scrollableElement = findScrollableParent(element)
-    
-    if (scrollableElement) {
-      const isAtTop = scrollableElement.scrollTop <= 0
-      const isAtBottom = 
-        scrollableElement.scrollHeight - scrollableElement.scrollTop <= scrollableElement.clientHeight
-      
-      // Only prevent default if attempting to scroll beyond bounds
-      if ((isAtTop && e.touches[0].clientY > 0) || 
-          (isAtBottom && e.touches[0].clientY < 0)) {
-        e.preventDefault()
-      }
-    } else {
-      // No scrollable parent, prevent default
-      e.preventDefault()
-    }
-  }
+  let startY = 0;
   
-  // Add passive: false to ensure preventDefault works
-  document.addEventListener('touchmove', handleTouchMove, { passive: false })
+  // Handle touch start to capture initial position
+  const handleTouchStart = (e: TouchEvent) => {
+    startY = e.touches[0].clientY;
+  };
+  
+  // Prevent overscroll/bounce only when needed
+  const handleTouchMove = (e: TouchEvent) => {
+    // Get current touch position
+    const currentY = e.touches[0].clientY;
+    const deltaY = currentY - startY;
+    
+    // Allow scrolling of elements that should scroll
+    const element = e.target as HTMLElement;
+    const scrollableElement = findScrollableParent(element);
+    
+    // Only prevent the browser's pull-to-refresh behavior
+    // when at the top of the page and pulling down
+    if (scrollableElement) {
+      const isAtTop = scrollableElement.scrollTop <= 0;
+      const isAtBottom = 
+        scrollableElement.scrollHeight - scrollableElement.scrollTop <= scrollableElement.clientHeight + 5; // Add small buffer
+      
+      // Only prevent pull-to-refresh (pulling down at the top)
+      if (isAtTop && deltaY > 0) {
+        e.preventDefault();
+      }
+      // Only prevent overscroll at bottom (pulling up at the bottom)
+      else if (isAtBottom && deltaY < 0 && scrollableElement !== document.body) {
+        // For some cases, still allow body to scroll
+        e.preventDefault();
+      }
+      // Otherwise, allow normal scrolling
+    }
+    // Even without a scrollable parent, don't always prevent default
+    // Only prevent if it's a deliberate pull-to-refresh on the body
+    else if (deltaY > 30 && element.tagName !== 'INPUT' && element.tagName !== 'TEXTAREA') {
+      e.preventDefault();
+    }
+  };
+  
+  // Add event listeners
+  document.addEventListener('touchstart', handleTouchStart, { passive: true });
+  document.addEventListener('touchmove', handleTouchMove, { passive: false });
   
   // Return cleanup function
   return () => {
-    document.removeEventListener('touchmove', handleTouchMove)
-  }
+    document.removeEventListener('touchstart', handleTouchStart);
+    document.removeEventListener('touchmove', handleTouchMove);
+  };
 }
 
 /**
  * Helper function to find the nearest scrollable parent element
+ * Improved to better detect scrollable containers
  */
 function findScrollableParent(element: HTMLElement | null): HTMLElement | null {
-  if (!element || element === document.body) return document.body
+  if (!element) return document.body;
+  if (element === document.body) return document.body;
   
-  const { overflowY } = window.getComputedStyle(element)
-  const isScrollable = overflowY !== 'visible' && overflowY !== 'hidden'
+  // Get computed style
+  const style = window.getComputedStyle(element);
   
-  if (isScrollable && element.scrollHeight > element.clientHeight) {
-    return element
+  // Check both overflow and overflowY properties
+  const { overflow, overflowY, overflowX } = style;
+  
+  // Element is scrollable if:
+  // 1. It has overflow: auto/scroll OR overflowY: auto/scroll
+  // 2. AND it has content that exceeds its height
+  const hasVerticalScroll = 
+    (overflow === 'auto' || overflow === 'scroll' || 
+     overflowY === 'auto' || overflowY === 'scroll');
+  
+  const hasHorizontalScroll = 
+    (overflow === 'auto' || overflow === 'scroll' || 
+     overflowX === 'auto' || overflowX === 'scroll');
+  
+  // Check if the element actually has content that can scroll
+  const canScrollVertically = element.scrollHeight > element.clientHeight;
+  const canScrollHorizontally = element.scrollWidth > element.clientWidth;
+  
+  // Return the element if it can actually scroll in either direction
+  if ((hasVerticalScroll && canScrollVertically) || 
+      (hasHorizontalScroll && canScrollHorizontally)) {
+    return element;
   }
   
-  return findScrollableParent(element.parentElement)
+  // If this element isn't scrollable, check its parent
+  return findScrollableParent(element.parentElement);
 }

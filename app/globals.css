@@ -128,8 +128,17 @@ body {
   * {
     @apply border-border;
   }
+  html, body {
+    height: 100%;
+    max-height: 100%;
+  }
   body {
     @apply bg-background text-foreground;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: none;
+    position: relative;
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Montserrat', sans-serif;
